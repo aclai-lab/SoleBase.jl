@@ -1,0 +1,13 @@
+name = "SoleData"
+uuid = "a9856566-1c7d-436e-b32f-27f5c1ce060a"
+authors = ["Federico Manzella", "Patrik Cavina", "Eduard I. Stan", "Lorenzo Balboni", "Giovanni Pagliarini"]
+version = "0.1.0"
+
+[compat]
+julia = "1"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
