@@ -16,7 +16,8 @@ const LogDetail = LogLevel(-1500)
 
 """
     throw_n_log(str::AbstractString, err_type = ErrorException)
-Log string `str` with `@error` and `throw` error of type `err_type`
+
+Logs string `str` with `@error` and `throw` error of type `err_type`.
 """
 function throw_n_log(str::AbstractString, err_type = ErrorException)
     @error str
@@ -25,8 +26,10 @@ end
 
 """
     nat_sort(x, y)
+
 "Little than" function implementing natural sort.
-It is to be used with Base.Sort functions as in `sort(..., lt=nat_sort)`
+It is meant to be used with Base.Sort functions as in `sort(..., lt=nat_sort)`.
+
 """
 function nat_sort(x, y)
     # https://titanwolf.org/Network/Articles/Article?AID=969b78b2-141a-43ef-9391-7c55b3c513c7
