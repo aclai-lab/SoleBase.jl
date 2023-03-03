@@ -1,6 +1,5 @@
-using SoleData
+using SoleBase
 using Test
 
-@testset "SoleData.jl" begin
-    # Write your tests here.
+@testset "SoleBase.jl" begin
 end
