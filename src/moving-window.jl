@@ -116,6 +116,9 @@ function _moving_window(
         allow_landmark_position::Tuple{<:AbstractFloat,<:AbstractFloat} = (0.0, 1.0),
         allow_overflow = false,
     )::AbstractVector{UnitRange{Int}}
+    if isnothing(landmark) && allow_landmark_position != (0.0,1.0)
+        warn("allow_landmark_position position is specified but landmark is not.")
+    end
     if first(allow_landmark_position) > last(allow_landmark_position)
         throw(ArgumentError(
             string("allow_landmark_position must have the second element greater than the
