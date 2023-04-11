@@ -2,6 +2,9 @@ using Test
 using IterTools
 using DataStructures
 using SoleBase
+using Random
+
+include("../src/moving-window.jl")
 
 function run_tests(list)
     println("\n" * ("#"^50))
