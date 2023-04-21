@@ -3,12 +3,7 @@
 # moving window
 
 """
-    movingwindow(npoints, nwindows, relative_overlap, window_size, window_step; kwargs...)
-
-Generates a certain number of windows from a time serie, and returns them as a Vector of
-indices.
-"""
-function movingwindow(
+    function movingwindow(
         npoints::Integer;
         nwindows::Union{Nothing,Integer} = nothing,
         relative_overlap::Union{Nothing,AbstractFloat} = nothing,
@@ -16,6 +11,18 @@ function movingwindow(
         window_step::Union{Nothing,Number} = nothing,
         kwargs...
     )::AbstractVector{UnitRange{Int}}
+
+Generates a certain number of windows from a time serie, and returns them as a `Vector` of
+indices.
+"""
+function movingwindow(
+    npoints::Integer;
+    nwindows::Union{Nothing,Integer} = nothing,
+    relative_overlap::Union{Nothing,AbstractFloat} = nothing,
+    window_size::Union{Nothing,Number} = nothing,
+    window_step::Union{Nothing,Number} = nothing,
+    kwargs...
+)::AbstractVector{UnitRange{Int}}
 
     if !isnothing(window_size) && !isnothing(window_step)
         _movingwindow(
@@ -54,12 +61,12 @@ Returns `nwindows` where each windows overlap with each other by `relative_overl
 Note: relative_overlap indicates in percentage the overlap between the windows
 """
 function _movingwindow(
-        npoints::Integer,
-        nwindows::Integer,
-        relative_overlap::AbstractFloat;
-        # TODO: allow_overflow::Bool = false
-        # TODO: landmark
-    )::AbstractVector{UnitRange{Int}}
+    npoints::Integer,
+    nwindows::Integer,
+    relative_overlap::AbstractFloat;
+    # TODO: allow_overflow::Bool = false
+    # TODO: landmark
+)::AbstractVector{UnitRange{Int}}
 
     if nwindows == 1
         return [1:npoints]
@@ -109,13 +116,13 @@ the first point of the window next to it.
 
 """
 function _movingwindow(
-        npoints::Integer,
-        window_size::Integer,
-        window_step::Integer;
-        landmark::Union{Integer,Nothing} = nothing,
-        allow_landmark_position::Tuple{<:AbstractFloat,<:AbstractFloat} = (0.0, 1.0),
-        allow_overflow = false,
-    )::AbstractVector{UnitRange{Int}}
+    npoints::Integer,
+    window_size::Integer,
+    window_step::Integer;
+    landmark::Union{Integer,Nothing} = nothing,
+    allow_landmark_position::Tuple{<:AbstractFloat,<:AbstractFloat} = (0.0, 1.0),
+    allow_overflow = false,
+)::AbstractVector{UnitRange{Int}}
     if isnothing(landmark) && allow_landmark_position != (0.0,1.0)
         warn("allow_landmark_position position is specified but landmark is not.")
     end
@@ -158,10 +165,10 @@ end
 # moving window - npoints- fixed window size and step with floating step
 
 function __movingwindow_without_overflow_fixed_size(
-        npoints::Integer,
-        window_size::AbstractFloat,
-        window_step::Real,
-    )::AbstractVector{UnitRange{Int}}
+    npoints::Integer,
+    window_size::AbstractFloat,
+    window_step::Real,
+)::AbstractVector{UnitRange{Int}}
 
     # NOTE: assumed it is important to the user to keep all windows the same size (not
     #         caring about keeping strictly the same step)
@@ -175,10 +182,10 @@ function __movingwindow_without_overflow_fixed_size(
 end
 
 function __movingwindow_without_overflow_fixed_size(
-        npoints::Integer,
-        window_size::Integer,
-        window_step::AbstractFloat,
-    )::AbstractVector{UnitRange{Int}}
+    npoints::Integer,
+    window_size::Integer,
+    window_step::AbstractFloat,
+)::AbstractVector{UnitRange{Int}}
     # TODO: implement
 
     # window_size = round(Int, window_size) # NOTE non-sense
