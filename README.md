@@ -1,5 +1,5 @@
 # *SoleBase.jl*
- <!-- - Base layer [*Sole.jl*](https://github.com/aclai-lab/Sole.jl) -->
+ <!-- - Base layer for [*Sole.jl*](https://github.com/aclai-lab/Sole.jl) -->
 
 [![Build Status](https://api.cirrus-ci.com/github/aclai-lab/SoleBase.jl.svg)](https://cirrus-ci.com/github/aclai-lab/SoleBase.jl)
 

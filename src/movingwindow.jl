@@ -3,12 +3,12 @@
 # moving window
 
 """
-    moving_window(npoints, nwindows, relative_overlap, window_size, window_step; kwargs...)
+    movingwindow(npoints, nwindows, relative_overlap, window_size, window_step; kwargs...)
 
 Generates a certain number of windows from a time serie, and returns them as a Vector of
 indices.
 """
-function moving_window(
+function movingwindow(
         npoints::Integer;
         nwindows::Union{Nothing,Integer} = nothing,
         relative_overlap::Union{Nothing,AbstractFloat} = nothing,
@@ -18,14 +18,14 @@ function moving_window(
     )::AbstractVector{UnitRange{Int}}
 
     if !isnothing(window_size) && !isnothing(window_step)
-        _moving_window(
+        _movingwindow(
             npoints,
             window_size,
             window_step;
             kwargs...
         )
     elseif !isnothing(nwindows) && !isnothing(relative_overlap)
-        _moving_window(
+        _movingwindow(
             npoints,
             nwindows,
             relative_overlap;
@@ -34,12 +34,12 @@ function moving_window(
     end
 end
 
-function moving_window(v::AbstractVector{<:Real}, args...; kwargs...)
-    return map(r -> v[r], moving_window(args...; kwargs...))
+function movingwindow(v::AbstractVector{<:Real}, args...; kwargs...)
+    return map(r -> v[r], movingwindow(args...; kwargs...))
 end
 
-function moving_window(f::Function, v::AbstractVector{<:Real}, args...; kwargs...)
-    return map(f, moving_window(v, args...; kwargs...))
+function movingwindow(f::Function, v::AbstractVector{<:Real}, args...; kwargs...)
+    return map(f, movingwindow(v, args...; kwargs...))
 end
 
 
@@ -47,13 +47,13 @@ end
 # moving window - npoints- fixed number of windows
 
 """
-    _moving_window(npoints, nwindows, relative_overlap)
+    _movingwindow(npoints, nwindows, relative_overlap)
 
 Returns `nwindows` where each windows overlap with each other by `relative_overlap`.
 
 Note: relative_overlap indicates in percentage the overlap between the windows
 """
-function _moving_window(
+function _movingwindow(
         npoints::Integer,
         nwindows::Integer,
         relative_overlap::AbstractFloat;
@@ -91,7 +91,7 @@ end
 # moving window - npoints- fixed window size and step
 
 """
-    _moving_window(npoints, window_size, window_step; landmark, allow_landmark_position, allow_landmark_on_edges, allow_overflow)
+    _movingwindow(npoints, window_size, window_step; landmark, allow_landmark_position, allow_landmark_on_edges, allow_overflow)
 
 Return a certain number of windows where each window as length `window_size` and the step
 between each window is `window_step`.
@@ -108,7 +108,7 @@ Note: the step between two window is the distance between the first point of a w
 the first point of the window next to it.
 
 """
-function _moving_window(
+function _movingwindow(
         npoints::Integer,
         window_size::Integer,
         window_step::Integer;
@@ -157,7 +157,7 @@ end
 # -------------------------------------------------------------
 # moving window - npoints- fixed window size and step with floating step
 
-function __moving_window_without_overflow_fixed_size(
+function __movingwindow_without_overflow_fixed_size(
         npoints::Integer,
         window_size::AbstractFloat,
         window_step::Real,
@@ -171,10 +171,10 @@ function __moving_window_without_overflow_fixed_size(
         @warn "`window_size` is not an integer: it will be approximated to " * string(nws)
     end
 
-    return __moving_window_without_overflow_fixed_size(npoints, nws, window_step)
+    return __movingwindow_without_overflow_fixed_size(npoints, nws, window_step)
 end
 
-function __moving_window_without_overflow_fixed_size(
+function __movingwindow_without_overflow_fixed_size(
         npoints::Integer,
         window_size::Integer,
         window_step::AbstractFloat,

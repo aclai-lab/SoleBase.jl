@@ -23,7 +23,7 @@ abstract type AbstractDataset end
 # AbstractDataset - nsamples
 
 """
-nsamples(X::AbstractDataset)
+    nsamples(X::AbstractDataset)
 
 Number of samples in the dataset.
 
@@ -38,6 +38,11 @@ end
 # includes
 
 include("utils.jl")
+
+include("movingwindow.jl")
+
+# Alias (TODO remove?)
+moving_window = movingwindow
 
 
 end
