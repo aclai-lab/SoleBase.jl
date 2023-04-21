@@ -1,7 +1,6 @@
 using Test
 using SoleBase
 using IterTools
-using DataStructures
 using Random
 
 function run_tests(list)
@@ -15,7 +14,7 @@ end
 println("Julia version: ", VERSION)
 
 test_suites = [
-    ("Windowing", ["movingwindow.jl", ]),
+    ("Moving window", ["movingwindow.jl", ]),
 ]
 
 @testset "SoleBase.jl" begin
