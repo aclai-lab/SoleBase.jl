@@ -5,15 +5,36 @@
 """
     function movingwindow(
         npoints::Integer;
+        kwargs...
+    )::AbstractVector{UnitRange{Int}}
+
+Compute and return
+a certain number of equally-spaced windows (i.e., vector of integer
+indices), used for slicing a vector of `npoints` values.
+The following two flavors of this function are available.
+
+    function movingwindow(
+        npoints::Integer;
         nwindows::Union{Nothing,Integer} = nothing,
         relative_overlap::Union{Nothing,AbstractFloat} = nothing,
+        kwargs...
+    )::AbstractVector{UnitRange{Int}}
+
+Compute `nwindows` windows, with consecutive windows overlapping by a portion equal to
+`relative_overlap`.
+
+    function movingwindow(
+        npoints::Integer;
         window_size::Union{Nothing,Number} = nothing,
         window_step::Union{Nothing,Number} = nothing,
         kwargs...
     )::AbstractVector{UnitRange{Int}}
 
-Generates a certain number of windows from a time serie, and returns them as a `Vector` of
-indices.
+The following keyword arguments are allowed:
+TODO landmark
+
+Compute windows of length `window_size`, with consecutive windows being shifted by
+`window_step` units.
 """
 function movingwindow(
     npoints::Integer;
@@ -56,9 +77,8 @@ end
 """
     _movingwindow(npoints, nwindows, relative_overlap)
 
-Returns `nwindows` where each windows overlap with each other by `relative_overlap`.
-
-Note: relative_overlap indicates in percentage the overlap between the windows
+Return `nwindows` where each window overlaps with the previous/following
+by a portion equal to `relative_overlap`.
 """
 function _movingwindow(
     npoints::Integer,
@@ -108,7 +128,6 @@ in common, the one indicated by `landmark`. For example, if the time serie has 1
 the landmark is 50, all the generated windows will have the 50th point.
 Additionally, is possible to specify the position of the landmark in the generated window
 using `allow_landmark_position`.
-
 
 
 Note: the step between two window is the distance between the first point of a window and
@@ -161,36 +180,36 @@ function _movingwindow(
 end
 
 
-# -------------------------------------------------------------
-# moving window - npoints- fixed window size and step with floating step
+# # -------------------------------------------------------------
+# # moving window - npoints- fixed window size and step with floating step
 
-function __movingwindow_without_overflow_fixed_size(
-    npoints::Integer,
-    window_size::AbstractFloat,
-    window_step::Real,
-)::AbstractVector{UnitRange{Int}}
+# function __movingwindow_without_overflow_fixed_size(
+#     npoints::Integer,
+#     window_size::AbstractFloat,
+#     window_step::Real,
+# )::AbstractVector{UnitRange{Int}}
 
-    # NOTE: assumed it is important to the user to keep all windows the same size (not
-    #         caring about keeping strictly the same step)
-    nws = round(Int, window_size)
+#     # NOTE: assumed it is important to the user to keep all windows the same size (not
+#     #         caring about keeping strictly the same step)
+#     nws = round(Int, window_size)
 
-    if floor(Int, window_size) != 0
-        @warn "`window_size` is not an integer: it will be approximated to " * string(nws)
-    end
+#     if floor(Int, window_size) != 0
+#         @warn "`window_size` is not an integer: it will be approximated to " * string(nws)
+#     end
 
-    return __movingwindow_without_overflow_fixed_size(npoints, nws, window_step)
-end
+#     return __movingwindow_without_overflow_fixed_size(npoints, nws, window_step)
+# end
 
-function __movingwindow_without_overflow_fixed_size(
-    npoints::Integer,
-    window_size::Integer,
-    window_step::AbstractFloat,
-)::AbstractVector{UnitRange{Int}}
-    # TODO: implement
+# function __movingwindow_without_overflow_fixed_size(
+#     npoints::Integer,
+#     window_size::Integer,
+#     window_step::AbstractFloat,
+# )::AbstractVector{UnitRange{Int}}
+#     # TODO: implement
 
-    # window_size = round(Int, window_size) # NOTE non-sense
-    # @show window_size
-    # # [clamp(round(Int, i), 1, npoints):clamp(round(Int, i)+window_size-1, 1, npoints) for i in 1:window_step:(npoints-(window_size-1))]
-    # #[round(Int, i):round(Int, i)+window_size-1 for i in 1:window_step:(npoints-(window_size-1))]
-    # [r:r+window_size for r in range(1, npoints, step = window_size)]
-end
+#     # window_size = round(Int, window_size) # NOTE non-sense
+#     # @show window_size
+#     # # [clamp(round(Int, i), 1, npoints):clamp(round(Int, i)+window_size-1, 1, npoints) for i in 1:window_step:(npoints-(window_size-1))]
+#     # #[round(Int, i):round(Int, i)+window_size-1 for i in 1:window_step:(npoints-(window_size-1))]
+#     # [r:r+window_size for r in range(1, npoints, step = window_size)]
+# end
