@@ -33,6 +33,8 @@ function nsamples(X::AbstractDataset)
     error("Please, provide method nsamples(::$(typeof(X))).")
 end
 
+# Used by both SoleData and SoleLogics.
+function frame end
 
 # -------------------------------------------------------------
 # includes
