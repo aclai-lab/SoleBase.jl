@@ -56,7 +56,7 @@ end
 """
     _moving_window(npoints, nwindows, relative_overlap)
 
-Returns `nwindows` where each windows overlap with each other by `relative_overlap`.
+Return `nwindows` where each windows overlap with each other by `relative_overlap`.
 
 Note: relative_overlap indicates in percentage the overlap between the windows
 """
