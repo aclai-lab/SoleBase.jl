@@ -35,7 +35,7 @@ function nat_sort(x, y)
     # https://titanwolf.org/Network/Articles/Article?AID=969b78b2-141a-43ef-9391-7c55b3c513c7
     splitbynum(x) = split(x, r"(?<=\D)(?=\d)|(?<=\d)(?=\D)")
     numstringtonum(arr) = [(n = tryparse(Float32, e)) != nothing ? n : e for e in arr]
-    
+
     xarr = numstringtonum(splitbynum(string(x)))
     yarr = numstringtonum(splitbynum(string(y)))
     for i in 1:min(length(xarr), length(yarr))
