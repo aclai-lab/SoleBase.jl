@@ -23,7 +23,7 @@ abstract type AbstractDataset end
 # AbstractDataset - ninstances
 
 """
-ninstances(X::AbstractDataset)
+    ninstances(X::AbstractDataset)
 
 Returns the number of instances (or samples) in the dataset.
 
@@ -33,11 +33,15 @@ function ninstances(X::AbstractDataset)
     error("Please, provide method ninstances(::$(typeof(X))).")
 end
 
-
 # -------------------------------------------------------------
 # includes
 
 include("utils.jl")
+
+include("movingwindow.jl")
+
+# Alias (TODO remove?)
+moving_window = movingwindow
 
 
 end

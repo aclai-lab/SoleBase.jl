@@ -32,6 +32,44 @@
 
 # @show indices, npoints, window_size, window_step
 
+# Moving window using window_size and window_step
+for npoints in 1:N
+    println(npoints)
+    for window_size in 1:npoints
+        for window_step in 1:npoints
+            # Moving Window - window_size, window_step
+            indices = moving_window(npoints; window_size = window_size, window_step = window_step)
+            indices_overflow = moving_window(npoints; window_size = window_size, window_step = window_step, allow_overflow = true)
+            for ids in [indices, indices_overflow]
+                # window_size
+                @test length(unique([length(ids) for ids in indices])) == 1
+                @test all([length(i) == window_size for i in indices]) == true
+                # window_step
+                @test all([first(indices[i+1]) - first(indices[i]) == window_step for i in 1:length(indices)-1]) == true
+                # others
+                @test first(first(indices)) == 1
+            end
+            #overflow
+            @test all([first(i) in 1:npoints for i in indices]) == true
+
+
+            @test all(length.(indices) .== length(first(indices))) == true
+            # nwindows
+            @test length(indices) == nwindows
+
+            # for landmark in 1:npoints
+            #     indices = moving_window(npoints; window_size = window_size, nwindows = nwindows, landmark = landmark)
+            #     # window_size
+            #     @test all(length.(indices) .== length(first(indices))) == true
+            #     # nwindows
+            #     @test length(indices) == nwindows
+            #     # landmark
+            #     @test all(map((i)->landmark in i,indices)) == true
+        end
+    end
+end
+
+
 # seed = 1
 
 # # Moving window using window_size and window_step
@@ -120,27 +158,3 @@
 #         end
 #     end
 # end
-
-for npoints in 1:100
-    for nwindows in 1:npoints
-        for window_size in 1:npoints
-            @show npoints, window_size, nwindows
-            indices = moving_window(npoints; window_size = window_size, nwindows = nwindows)
-            @show indices
-            # window_size
-            @test all(length.(indices) .== length(first(indices))) == true
-            # nwindows
-            @test length(indices) == nwindows
-
-            # for landmark in 1:npoints
-            #     indices = moving_window(npoints; window_size = window_size, nwindows = nwindows, landmark = landmark)
-            #     # window_size
-            #     @test all(length.(indices) .== length(first(indices))) == true
-            #     # nwindows
-            #     @test length(indices) == nwindows
-            #     # landmark
-            #     @test all(map((i)->landmark in i,indices)) == true
-            # end
-        end
-    end
-end
