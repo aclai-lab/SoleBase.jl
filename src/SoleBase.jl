@@ -3,7 +3,7 @@ module SoleBase
 
 
 export AbstractDataset
-export nsamples
+export ninstances
 
 export moving_window
 
@@ -15,22 +15,22 @@ export moving_window
 
 Abstract supertype for all datasets.
 
-See also [`nsamples`](@ref).
+See also [`ninstances`](@ref).
 """
 abstract type AbstractDataset end
 
 # -------------------------------------------------------------
-# AbstractDataset - nsamples
+# AbstractDataset - ninstances
 
 """
-nsamples(X::AbstractDataset)
+ninstances(X::AbstractDataset)
 
-Number of samples in the dataset.
+Returns the number of instances (or samples) in the dataset.
 
 See also [`AbstractDataset`](@ref).
 """
-function nsamples(X::AbstractDataset)
-    error("Please, provide method nsamples(::$(typeof(X))).")
+function ninstances(X::AbstractDataset)
+    error("Please, provide method ninstances(::$(typeof(X))).")
 end
 
 
