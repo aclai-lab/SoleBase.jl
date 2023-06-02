@@ -157,9 +157,6 @@ function _movingwindow(
         ))
     end
 
-<<<<<<< HEAD:src/moving-window.jl
-Return `nwindows` where each windows overlap with each other by `relative_overlap`.
-=======
     start = !isnothing(landmark) ? landmark-window_size+1 : start
     start = start < 1 ? 1 : start
     # indices = map((r)->r:r+window_size-1, range(start, npoints, step = window_step))
@@ -385,4 +382,3 @@ end
 # values outside of `1:npoints`. For example, if `npoints=100`, `window_size=10`,
 # `window_step=10` and
 # `allow_overflow=true`, then .
->>>>>>> dev-v0.9:src/movingwindow.jl

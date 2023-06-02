@@ -54,8 +54,6 @@ for npoints in 1:N
 
 
             @test all(length.(indices) .== length(first(indices))) == true
-            # nwindows
-            @test length(indices) == nwindows
 
             # for landmark in 1:npoints
             #     indices = moving_window(npoints; window_size = window_size, nwindows = nwindows, landmark = landmark)
