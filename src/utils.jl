@@ -14,6 +14,21 @@ Log detailed debug info
 """
 const LogDetail = LogLevel(-1500)
 
+
+function humansize(X; digits = 2, minshowndigits = digits)
+    s = Base.summarysize(X)
+    d = repeat('0', digits-minshowndigits)
+    if !startswith(string(round(s/1024/1024/1024, digits=digits)), "0.$(d)")
+        "$(s/1024/1024/1024 |> x->round(x, digits=digits)) GBs"
+    elseif !startswith(string(round(s/1024/1024, digits=digits)), "0.$(d)")
+        "$(s/1024/1024 |> x->round(x, digits=digits)) MBs"
+    elseif !startswith(string(round(s/1024, digits=digits)), "0.$(d)")
+        "$(s/1024 |> x->round(x, digits=digits)) KBs"
+    else
+        "$(s |> x->round(x, digits=digits)) Bytes"
+    end
+end
+
 """
     throw_n_log(str::AbstractString, err_type = ErrorException)
 

@@ -3,6 +3,7 @@ module SoleBase
 
 
 export AbstractDataset
+export humansize
 export ninstances
 
 export moving_window
