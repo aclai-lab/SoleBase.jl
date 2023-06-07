@@ -47,19 +47,16 @@ provide the following method:
 """$(_doc_slicedataset)"""
 function slicedataset(
     dataset::D,
-    dataset_slice::Union{Colon,Integer,AbstractVector{<:Integer},Tuple{<:Integer}};
+    dataset_slice::Union{Colon,Integer,AbstractVector,Tuple};
     allow_no_instances = false,
     return_view = false,
     kwargs...,
 )::D where {D}
-    if dataset_slice isa Integer
-        dataset_slice = [dataset_slice]
-    elseif dataset_slice isa Tuple{<:Integer}
-        dataset_slice = collect(dataset_slice)
-    end
     if dataset_slice isa Colon
         return deepcopy(dataset)
     else
+        dataset_slice = vec(collect(dataset_slice))
+        @assert eltype(dataset_slice) <: Integer
         @assert (allow_no_instances ||
             (!(dataset_slice isa Union{AbstractVector{<:Integer},Tuple{<:Integer}}) ||
                 length(dataset_slice) > 0)) "Can't apply empty slice to dataset."
