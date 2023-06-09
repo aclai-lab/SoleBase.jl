@@ -64,6 +64,11 @@ function slicedataset(
     end
 end
 
+function concatdatasets(datasets::D...) where {D}
+    return error("`concatdatasets` method not implemented for type "
+        * string(typejoin(datasets...))) * "."
+end
+
 """$(_doc_slicedataset)"""
 function instances(
     dataset::D,
