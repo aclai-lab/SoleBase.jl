@@ -72,7 +72,7 @@ end
 """$(_doc_slicedataset)"""
 function instances(
     dataset::D,
-    dataset_slice::AbstractVector{<:Integer},
+    inds::AbstractVector{<:Integer},
     return_view::Union{Val{true},Val{false}};
     kwargs...
 )::D where {D}
