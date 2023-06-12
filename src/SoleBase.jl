@@ -28,7 +28,7 @@ _doc_slicedataset = """
         allow_no_instances = false,
         return_view = false,
         kwargs...,
-    )::D where {D<:AbstractDataset}
+    ) where {D<:AbstractDataset}
 
 Return a machine learning dataset with a subset of the instances.
 
@@ -41,7 +41,7 @@ provide the following method:
         dataset_slice::AbstractVector{<:Integer},
         return_view::Union{Val{true},Val{false}};
         kwargs...
-    )::D where {D<:AbstractDataset}
+    ) where {D<:AbstractDataset}
 """
 
 """$(_doc_slicedataset)"""
@@ -51,7 +51,7 @@ function slicedataset(
     allow_no_instances = false,
     return_view = false,
     kwargs...,
-)::D where {D}
+) where {D}
     if dataset_slice isa Colon
         return deepcopy(dataset)
     else
@@ -75,7 +75,7 @@ function instances(
     inds::AbstractVector{<:Integer},
     return_view::Union{Val{true},Val{false}};
     kwargs...
-)::D where {D}
+) where {D}
     return error("`instances` method not implemented for type "
         * string(typeof(dataset))) * "."
 end
