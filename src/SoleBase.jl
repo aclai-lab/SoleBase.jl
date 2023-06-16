@@ -66,7 +66,7 @@ end
 
 function concatdatasets(datasets::D...) where {D}
     return error("`concatdatasets` method not implemented for type "
-        * string(typejoin(datasets...))) * "."
+        * string(typejoin(typeof.(datasets)...))) * "."
 end
 
 """$(_doc_slicedataset)"""
