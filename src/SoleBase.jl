@@ -59,7 +59,7 @@ function slicedataset(
         @assert eltype(dataset_slice) <: Integer
         @assert (allow_no_instances ||
             (!(dataset_slice isa Union{AbstractVector{<:Integer},Tuple{<:Integer}}) ||
-                length(dataset_slice) > 0)) "Can't apply empty slice to dataset."
+                length(dataset_slice) > 0)) "Cannot apply empty slice to dataset."
         return instances(dataset, dataset_slice, Val(return_view); kwargs...)
     end
 end
