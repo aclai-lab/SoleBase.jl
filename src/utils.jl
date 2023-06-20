@@ -83,4 +83,6 @@ vectorize(x::AbstractVector) = x
 Spawns a `MersenneTwister` seeded using a number peeled from another `rng`.
 Useful for reproducibility.
 """
-spawn(rng::Random.AbstractRNG) = Random.MersenneTwister(abs(rand(rng, Int)))
+function spawn(rng::Random.AbstractRNG)
+    Random.MersenneTwister(abs(rand(rng, Int)))
+end
