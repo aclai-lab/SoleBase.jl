@@ -56,10 +56,14 @@ function slicedataset(
         return deepcopy(dataset)
     else
         dataset_slice = vec(collect(dataset_slice))
-        @assert eltype(dataset_slice) <: Integer
-        @assert (allow_no_instances ||
+        if !(eltype(dataset_slice) <: Integer)
+            error("Cannot slice dataset with slice of type $(eltype(dataset_slice))")
+        end
+        if !(allow_no_instances ||
             (!(dataset_slice isa Union{AbstractVector{<:Integer},Tuple{<:Integer}}) ||
-                length(dataset_slice) > 0)) "Cannot apply empty slice to dataset."
+                length(dataset_slice) > 0))
+            error("Cannot apply empty slice to dataset.")
+        end
         return instances(dataset, dataset_slice, Val(return_view); kwargs...)
     end
 end
