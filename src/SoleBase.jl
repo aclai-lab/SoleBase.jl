@@ -57,12 +57,12 @@ function slicedataset(
     else
         dataset_slice = vec(collect(dataset_slice))
         if !(eltype(dataset_slice) <: Integer)
-            error("Cannot slice dataset with slice of type $(eltype(dataset_slice))")
+            return error("Cannot slice dataset with slice of type $(eltype(dataset_slice))")
         end
         if !(allow_no_instances ||
             (!(dataset_slice isa Union{AbstractVector{<:Integer},Tuple{<:Integer}}) ||
                 length(dataset_slice) > 0))
-            error("Cannot apply empty slice to dataset.")
+            return error("Cannot apply empty slice to dataset.")
         end
         return instances(dataset, dataset_slice, Val(return_view); kwargs...)
     end
@@ -96,7 +96,7 @@ Returns the number of instances (or samples) in the dataset.
 See also [`AbstractDataset`](@ref).
 """
 function ninstances(X::AbstractDataset)
-    error("Please, provide method ninstances(::$(typeof(X))).")
+    return error("Please, provide method ninstances(::$(typeof(X))).")
 end
 
 # -------------------------------------------------------------
