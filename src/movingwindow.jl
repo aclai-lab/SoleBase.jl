@@ -141,7 +141,7 @@ function _movingwindow(
     start::Integer = 1, # TODO don't mention in the docstrings.
 )::AbstractVector{UnitRange{Int}}
     if isnothing(landmark) && allow_landmark_position != (0.0,1.0)
-        warn("allow_landmark_position position is specified but landmark is not.")
+        @warn "allow_landmark_position position is specified but landmark is not."
     end
     if first(allow_landmark_position) > last(allow_landmark_position)
         throw(ArgumentError(
