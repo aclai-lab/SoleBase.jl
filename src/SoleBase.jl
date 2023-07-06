@@ -91,13 +91,15 @@ end
 """
     ninstances(X::AbstractDataset)
 
-Returns the number of instances (or samples) in the dataset.
+Return the number of instances (or samples) in a dataset.
 
 See also [`AbstractDataset`](@ref).
 """
 function ninstances(X::AbstractDataset)
     return error("Please, provide method ninstances(::$(typeof(X))).")
 end
+
+function dimensionality end
 
 # -------------------------------------------------------------
 # includes

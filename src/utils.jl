@@ -15,7 +15,7 @@ Log detailed debug info
 const LogDetail = LogLevel(-1500)
 
 """
-Returns the human-readable size in Bytes/KBs/MBs/GBs/TBs of a Julia object.
+Return the human-readable size in Bytes/KBs/MBs/GBs/TBs of a Julia object.
 """
 function humansize(X; digits = 2, minshowndigits = digits)
     s = Base.summarysize(X)

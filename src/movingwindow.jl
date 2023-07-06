@@ -30,7 +30,7 @@ according to different use cases.
         kwargs...
     )::AbstractVector{UnitRange{Int}}
 
-Returns windows of length `window_size`, with a step between consecutive windows of
+Return windows of length `window_size`, with a step between consecutive windows of
 `window_step`.
 When the `window_step` is a floating point number, the step within the returned
 windows is not constant, but fluctuates around `window_step`.
