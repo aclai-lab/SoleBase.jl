@@ -109,10 +109,10 @@ function movingwindow(
         )
         specified_args = collect(keys(filter(((k,v),)->!isnothing(v), pairs(_args))))
         if length(specified_args) == 0
-            error("Cannot compute moving window with no keyword argument specified. " *
+            error("Cannot compute moving window without any keyword argument. " *
                 "Please refer to the help for movingwindow.")
         else
-            error("Cannot compute moving window with no keyword arguments: " *
+            error("Cannot compute moving window with keyword arguments: " *
                 join(specified_args, "`, `", "` and `") *
                 ". Please refer to the help for movingwindow.")
         end
