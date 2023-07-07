@@ -6,7 +6,7 @@ export AbstractDataset
 export humansize
 export ninstances
 
-export moving_window
+export moving_window, movingwindow
 
 # -------------------------------------------------------------
 # AbstractDataset
@@ -111,8 +111,7 @@ include("utils.jl")
 
 include("movingwindow.jl")
 
-# Alias (TODO remove?)
-moving_window = movingwindow
+@deprecate moving_window movingwindow
 
 
 end

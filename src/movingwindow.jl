@@ -22,8 +22,8 @@ according to different use cases.
 
     function movingwindow(
         npoints::Integer;
-        window_size::Union{Nothing,Number} = nothing,
-        window_step::Union{Nothing,Number} = nothing,
+        window_size::Union{Nothing,Real} = nothing,
+        window_step::Union{Nothing,Real} = nothing,
         # Optional arguments
         landmark::Union{Integer,Nothing} = nothing,
         allow_landmark_position::Tuple{<:AbstractFloat,<:AbstractFloat} = (0.0, 1.0),
@@ -58,7 +58,7 @@ Compute `nwindows` windows, with consecutive windows overlapping by a portion eq
     function movingwindow(
         npoints::Integer;
         nwindows::Union{Nothing,Integer} = nothing,
-        window_size::Union{Nothing,Number} = nothing,
+        window_size::Union{Nothing,Real} = nothing,
         kwargs...
     )::AbstractVector{UnitRange{Int}}
 
@@ -74,8 +74,8 @@ function movingwindow(
     npoints::Integer;
     nwindows::Union{Nothing,Integer} = nothing,
     relative_overlap::Union{Nothing,AbstractFloat} = nothing,
-    window_size::Union{Nothing,Number} = nothing,
-    window_step::Union{Nothing,Number} = nothing,
+    window_size::Union{Nothing,Real} = nothing,
+    window_step::Union{Nothing,Real} = nothing,
     kwargs...
 )::AbstractVector{UnitRange{Int}}
 
@@ -120,7 +120,8 @@ function movingwindow(
 end
 
 function movingwindow(v::AbstractVector, args...; kwargs...)
-    return map(r -> v[r], movingwindow(args...; kwargs...))
+    npoints = length(v)
+    return map(r -> v[r], movingwindow(npoints, args...; kwargs...))
 end
 
 function movingwindow(f::Base.Callable, v::AbstractVector, args...; kwargs...)
@@ -133,13 +134,16 @@ end
 
 function _movingwindow(
     npoints::Integer,
-    window_size::Integer,
+    window_size::Union{Integer,AbstractFloat},
     window_step::Union{Integer,AbstractFloat};
     landmark::Union{Integer,Nothing} = nothing,
     allow_landmark_position::Tuple{<:AbstractFloat,<:AbstractFloat} = (0.0, 1.0),
-    allow_overflow::Bool = false, # TODO: remove overflow (never used)
+    force_coverage::Bool = false,
     start::Integer = 1, # TODO don't mention in the docstrings.
 )::AbstractVector{UnitRange{Int}}
+
+    window_size = max(round(Int, window_size), 1)
+
     if isnothing(landmark) && allow_landmark_position != (0.0,1.0)
         @warn "allow_landmark_position position is specified but landmark is not."
     end
@@ -163,8 +167,10 @@ function _movingwindow(
     indices = map((r)->round(Int,r):round(Int, r+window_size-1), range(start, npoints, step = window_step))
 
     # @show indices
-    if !allow_overflow
+    if !force_coverage
         filter!((w)->w.start in 1:npoints && w.stop in 1:npoints, indices)
+    else
+        map!((w)->clamp(w.start, 1, npoints):clamp(w.stop, 1, npoints), indices)
     end
 
     if !isnothing(landmark)
@@ -188,7 +194,6 @@ function _moving_window_fixed_num(
     landmark::Union{Nothing,Integer} = nothing,
     do_without::Symbol = :nwindows,
     allow_landmark_position::Tuple{<:AbstractFloat,<:AbstractFloat} = (0.0, 1.0),
-    # TODO: allow_overflow::Bool = false
 )::AbstractVector{UnitRange{Int}}
 
     if nwindows == 1 && isnothing(landmark)
@@ -209,7 +214,6 @@ function _moving_window_fixed_num(
     end
 
     @show overlap, end_bounds
-    # TODO: implement allow_overflow (should be some if in the following code)
     indices = Vector{UnitRange}(([
             if i == 1
                 (1+round(Int, end_bounds[i])):(round(Int, end_bounds[i+1]+overlap))
