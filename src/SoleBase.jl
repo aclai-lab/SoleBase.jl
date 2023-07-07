@@ -99,7 +99,10 @@ function ninstances(X::AbstractDataset)
     return error("Please, provide method ninstances(::$(typeof(X))).")
 end
 
+# -------------------------------------------------------------
+
 function dimensionality end
+function channelsize end
 
 # -------------------------------------------------------------
 # includes
