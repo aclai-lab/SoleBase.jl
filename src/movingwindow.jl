@@ -1,3 +1,4 @@
+using IterTools
 
 # ------------------------------------------------------------------------------------------
 # moving window
@@ -208,12 +209,12 @@ function _moving_window_fixed_num(
     else
         overlap = npoints / nwindows * relative_overlap
         end_bounds = Iterators.take(
-            iterated(x -> npoints / nwindows + x, 0),
+            IterTools.iterated(x -> npoints / nwindows + x, 0),
             nwindows + 1
         ) |> collect
     end
 
-    @show overlap, end_bounds
+    # @show overlap, end_bounds
     indices = Vector{UnitRange}(([
             if i == 1
                 (1+round(Int, end_bounds[i])):(round(Int, end_bounds[i+1]+overlap))
