@@ -111,7 +111,7 @@ include("utils.jl")
 
 include("movingwindow.jl")
 
-@deprecate moving_window movingwindow
+@deprecate moving_window(args...; kwargs...) movingwindow(args...; kwargs...)
 
 
 end
