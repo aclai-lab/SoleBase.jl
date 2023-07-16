@@ -1,7 +1,7 @@
 name = "SoleBase"
 uuid = "4475fa32-7023-44a0-aa70-4813b230e492"
 authors = ["Federico Manzella", "Patrik Cavina", "Eduard I. Stan", "Lorenzo Balboni", "Giovanni Pagliarini"]
-version = "0.9.2"
+version = "0.10.0"
 
 [deps]
 IterTools = "c8e1da08-722c-5040-9ed9-7db0dc04731e"
