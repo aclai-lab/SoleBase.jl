@@ -1,8 +1,6 @@
 
-# ------------------------------------------------------------------------------------------
-# moving window
-
-# TODO rename window_size-> window_length
+# ------------------------------------------------------------------------------
+# movingwindow
 
 """
     movingwindow(vec::AbstractVector; kwargs...)::AbstractVector{UnitRange{Int}}
@@ -22,7 +20,7 @@ according to different use cases.
 
     function movingwindow(
         npoints::Integer;
-        window_size::Union{Nothing,Real} = nothing,
+        window_length::Union{Nothing,Real} = nothing,
         window_step::Union{Nothing,Real} = nothing,
         # Optional arguments
         landmark::Union{Integer,Nothing} = nothing,
@@ -30,7 +28,7 @@ according to different use cases.
         kwargs...
     )::AbstractVector{UnitRange{Int}}
 
-Return windows of length `window_size`, with a step between consecutive windows of
+Return windows of length `window_length`, with a step between consecutive windows of
 `window_step`.
 When the `window_step` is a floating point number, the step within the returned
 windows is not constant, but fluctuates around `window_step`.
@@ -58,53 +56,53 @@ Compute `nwindows` windows, with consecutive windows overlapping by a portion eq
     function movingwindow(
         npoints::Integer;
         nwindows::Union{Nothing,Integer} = nothing,
-        window_size::Union{Nothing,Real} = nothing,
+        window_length::Union{Nothing,Real} = nothing,
         kwargs...
     )::AbstractVector{UnitRange{Int}}
 
-Compute `nwindows` windows of length `window_size`.
+Compute `nwindows` windows of length `window_length`.
 
 # Examples
 TODO
 
-Compute windows of length `window_size`, with consecutive windows being shifted by
+Compute windows of length `window_length`, with consecutive windows being shifted by
 `window_step` units.
 """
 function movingwindow(
     npoints::Integer;
     nwindows::Union{Nothing,Integer} = nothing,
     relative_overlap::Union{Nothing,AbstractFloat} = nothing,
-    window_size::Union{Nothing,Real} = nothing,
+    window_length::Union{Nothing,Real} = nothing,
     window_step::Union{Nothing,Real} = nothing,
     kwargs...
 )::AbstractVector{UnitRange{Int}}
 
-    if !isnothing(window_size) && !isnothing(window_step)
+    if !isnothing(window_length) && !isnothing(window_step)
         _movingwindow(
             npoints,
-            window_size,
+            window_length,
             window_step;
             kwargs...
         )
     elseif !isnothing(nwindows) && !isnothing(relative_overlap)
-        _moving_window_fixed_num(
+        _movingwindow_fixed_num(
             npoints,
             nwindows,
             relative_overlap;
             kwargs...
         )
-    elseif !isnothing(nwindows) && !isnothing(window_size)
-        _moving_window_fixed_num_size(
+    elseif !isnothing(nwindows) && !isnothing(window_length)
+        _movingwindow_fixed_num_size(
             npoints,
             nwindows,
-            window_size;
+            window_length;
             kwargs...
         )
     else
         _args = (;
             nwindows = nwindows,
             relative_overlap = relative_overlap,
-            window_size = window_size,
+            window_length = window_length,
             window_step = window_step,
         )
         specified_args = collect(keys(filter(((k,v),)->!isnothing(v), pairs(_args))))
@@ -134,7 +132,7 @@ end
 
 function _movingwindow(
     npoints::Integer,
-    window_size::Union{Integer,AbstractFloat},
+    window_length::Union{Integer,AbstractFloat},
     window_step::Union{Integer,AbstractFloat};
     landmark::Union{Integer,Nothing} = nothing,
     allow_landmark_position::Tuple{<:AbstractFloat,<:AbstractFloat} = (0.0, 1.0),
@@ -142,7 +140,7 @@ function _movingwindow(
     start::Integer = 1, # TODO don't mention in the docstrings.
 )::AbstractVector{UnitRange{Int}}
 
-    window_size = max(round(Int, window_size), 1)
+    window_length = max(round(Int, window_length), 1)
 
     if isnothing(landmark) && allow_landmark_position != (0.0,1.0)
         @warn "allow_landmark_position position is specified but landmark is not."
@@ -161,10 +159,10 @@ function _movingwindow(
         ))
     end
 
-    start = !isnothing(landmark) ? landmark-window_size+1 : start
+    start = !isnothing(landmark) ? landmark-window_length+1 : start
     start = start < 1 ? 1 : start
-    # indices = map((r)->r:r+window_size-1, range(start, npoints, step = window_step))
-    indices = map((r)->round(Int,r):round(Int, r+window_size-1), range(start, npoints, step = window_step))
+    # indices = map((r)->r:r+window_length-1, range(start, npoints, step = window_step))
+    indices = map((r)->round(Int,r):round(Int, r+window_length-1), range(start, npoints, step = window_step))
 
     # @show indices
     if !force_coverage
@@ -187,7 +185,7 @@ end
 
 # ------------------------------------------------------------------------------------------
 # moving window - fixed number of windows
-function _moving_window_fixed_num(
+function _movingwindow_fixed_num(
     npoints::Integer,
     nwindows::Integer,
     relative_overlap::AbstractFloat;
@@ -201,10 +199,10 @@ function _moving_window_fixed_num(
     end
 
     if do_without == :relative_overlap
-        window_size = npoints / nwindows
-        start = landmark - window_size
+        window_length = npoints / nwindows
+        start = landmark - window_length
         start = start < 1 ? 1 : start
-        indices = map((r)->ceil(Int, r):round(Int, r+window_size-1), range(start, npoints, step = landmark / nwindows))
+        indices = map((r)->ceil(Int, r):round(Int, r+window_length-1), range(start, npoints, step = landmark / nwindows))
     else
         overlap = npoints / nwindows * relative_overlap
         end_bounds = Iterators.take(
@@ -245,50 +243,50 @@ end
 # ------------------------------------------------------------------------------------------
 # moving window - fixed number of fixed-size windows
 
-function _moving_window_fixed_num_size(
+function _movingwindow_fixed_num_size(
     npoints::Integer,
     nwindows::Integer,
-    window_size::Integer;
+    window_length::Integer;
     landmark::Union{Integer,Nothing} = nothing,
 )
-    # window_size <= npoints
-    if window_size == npoints
+    # window_length <= npoints
+    if window_length == npoints
         map(_->1:npoints, 1:nwindows)
         # @show map(_->1:npoints, 1:nwindows)
     else
         if !isnothing(landmark)
-            start = landmark - window_size + 1
-            finish = landmark + window_size - 1
+            start = landmark - window_length + 1
+            finish = landmark + window_length - 1
             npoints = length(start:finish)
         else
             start = 1
             finish = npoints
         end
 
-        steps = (npoints - (nwindows * window_size))
+        steps = (npoints - (nwindows * window_length))
 
         if steps == 0
-            window_step = window_size
+            window_step = window_length
         elseif steps > 0
             if nwindows != 1
-                window_step = (steps / (nwindows - 1)) + window_size
+                window_step = (steps / (nwindows - 1)) + window_length
             else
-                window_step = (steps / nwindows) + window_size
+                window_step = (steps / nwindows) + window_length
             end
         else
-            window_step = window_size - (abs(steps) / (nwindows - 1))
+            window_step = window_length - (abs(steps) / (nwindows - 1))
         end
 
         @show steps, window_step, start, finish
         #@show range(start, npoints, step = window_step)
-        #indices = moving_window(finish; window_size = window_size, window_step = window_step, start = start)
+        #indices = movingwindow(finish; window_length = window_length, window_step = window_step, start = start)
         #@show indices
         #indices[1:nwindows]
-        indices = map((r)->round(Int,r):(round(Int, r)+window_size-1), range(start, finish, step = window_step))
+        indices = map((r)->round(Int,r):(round(Int, r)+window_length-1), range(start, finish, step = window_step))
 
-        # indices = map((r)->round(Int,r):round(Int, r+window_size-1), range(start, npoints, step = window_step))[1:npoints]
+        # indices = map((r)->round(Int,r):round(Int, r+window_length-1), range(start, npoints, step = window_step))[1:npoints]
 
-        # indices = map((r)->round(Int,r):round(Int, r+window_size-1), range(landmark-window_size+1, landmark+window_size, step = window_step))
+        # indices = map((r)->round(Int,r):round(Int, r+window_length-1), range(landmark-window_length+1, landmark+window_length, step = window_step))
     end
 end
 
@@ -298,25 +296,25 @@ end
 ############################################################################################
 
 # old version
-# function _moving_window_fixed_num_size(
+# function _movingwindow_fixed_num_size(
 #         npoints::Integer,
 #         nwindows::Integer,
-#         window_size::Integer;
+#         window_length::Integer;
 #         landmark::Union{Integer,Nothing} = nothing,
 #         kwargs...
 #     )::AbstractVector{UnitRange{Int}}
-#     start = !isnothing(landmark) ? landmark-window_size+1 : 1
+#     start = !isnothing(landmark) ? landmark-window_length+1 : 1
 #     start = start < 1 ? 1 : start
 
 #     finish = !isnothing(landmark) ? landmark-1 : npoints
 
 #     if start != landmark
-#         step =  !isnothing(landmark) ? floor(Int, (length(start:landmark)-1) / (nwindows)) : floor(Int, window_size/nwindows)
+#         step =  !isnothing(landmark) ? floor(Int, (length(start:landmark)-1) / (nwindows)) : floor(Int, window_length/nwindows)
 #     else
 #         step = 1
 #     end
 
-#     if (start + step * (nwindows -1)  + window_size) > npoints && !isnothing(landmark)
+#     if (start + step * (nwindows -1)  + window_length) > npoints && !isnothing(landmark)
 #         step = floor(Int, length(landmark:npoints) / nwindows)
 #     end
 
@@ -324,10 +322,10 @@ end
 #     # Case 2: landmark too close to end of time serie
 #     #
 
-#     indices = moving_window(npoints; window_size = window_size, window_step = step, landmark = landmark, kwargs...)
+#     indices = movingwindow(npoints; window_length = window_length, window_step = step, landmark = landmark, kwargs...)
 #     @show indices
 
-#     #indices = [r:r+window_size-1 for r in range(start, npoints, step = step)]
+#     #indices = [r:r+window_length-1 for r in range(start, npoints, step = step)]
 
 #     if !isempty(indices)
 #         if !isnothing(landmark)
@@ -350,16 +348,16 @@ end
 
 # function __movingwindow_without_overflow_fixed_size(
 #     npoints::Integer,
-#     window_size::AbstractFloat,
+#     window_length::AbstractFloat,
 #     window_step::Real,
 # )::AbstractVector{UnitRange{Int}}
 
 #     # NOTE: assumed it is important to the user to keep all windows the same size (not
 #     #         caring about keeping strictly the same step)
-#     nws = round(Int, window_size)
+#     nws = round(Int, window_length)
 
-#     if floor(Int, window_size) != 0
-#         @warn "`window_size` is not an integer: it will be approximated to " * string(nws)
+#     if floor(Int, window_length) != 0
+#         @warn "`window_length` is not an integer: it will be approximated to " * string(nws)
 #     end
 
 #     return __movingwindow_without_overflow_fixed_size(npoints, nws, window_step)
@@ -367,22 +365,22 @@ end
 
 # function __movingwindow_without_overflow_fixed_size(
 #     npoints::Integer,
-#     window_size::Integer,
+#     window_length::Integer,
 #     window_step::AbstractFloat,
 # )::AbstractVector{UnitRange{Int}}
 #     # TODO: implement
 
-    # window_size = round(Int, window_size) # NOTE non-sense
-    # @show window_size
-    # # [clamp(round(Int, i), 1, npoints):clamp(round(Int, i)+window_size-1, 1, npoints) for i in 1:window_step:(npoints-(window_size-1))]
-    # #[round(Int, i):round(Int, i)+window_size-1 for i in 1:window_step:(npoints-(window_size-1))]
-    # [r:r+window_size for r in range(1, npoints, step = window_size)]
+    # window_length = round(Int, window_length) # NOTE non-sense
+    # @show window_length
+    # # [clamp(round(Int, i), 1, npoints):clamp(round(Int, i)+window_length-1, 1, npoints) for i in 1:window_step:(npoints-(window_length-1))]
+    # #[round(Int, i):round(Int, i)+window_length-1 for i in 1:window_step:(npoints-(window_length-1))]
+    # [r:r+window_length for r in range(1, npoints, step = window_length)]
 # end
 
-#step_size = (npoints-(nwind*window_size)) / (nwind-1)
+#step_size = (npoints-(nwind*window_length)) / (nwind-1)
 # questo è lo step a partire dalla fine della finestra precedente (quindi può anche essere negativo se c'è un overlap tra le finestre)
 
 # When `allow_overflow=true`, a simpler algorithm for computing the ... the function is allowed to return windows with
-# values outside of `1:npoints`. For example, if `npoints=100`, `window_size=10`,
+# values outside of `1:npoints`. For example, if `npoints=100`, `window_length=10`,
 # `window_step=10` and
 # `allow_overflow=true`, then .
