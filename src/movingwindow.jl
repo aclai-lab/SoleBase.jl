@@ -68,6 +68,24 @@ TODO
 Compute windows of length `window_length`, with consecutive windows being shifted by
 `window_step` units.
 """
+
+# TODO: Expalin relative_overlap
+"""
+    movingwindow(npoints, nwindows, relative_overlap, window_length, window_step; kwargs...)
+
+Generates a certain number of windows from a serie of points (`npoints`), and 
+returns them as a Vector of indices.
+
+NOTE: The call to the moving window must expect three, and only three, 
+positional parameters, i.e. `npoints` and a combination of the rest.
+
+## PARAMETERS
+- `npoints` is the Vector of Integer on which the windows will be generated;
+- `nwindows` indicates the number of will to generate;
+- `relative_overlap`
+- `window_length` indicates the length of the single window;
+- `window_step` indicates the distance (step) between the starting point of one window (not included) and the starting point of the next one (included).
+"""
 function movingwindow(
     npoints::Integer;
     nwindows::Union{Nothing,Integer} = nothing,
