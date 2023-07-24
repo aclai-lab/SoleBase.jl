@@ -167,9 +167,9 @@ end
 
 
 # ------------------------------------------------------------------------------
-# movingwindow - fixed window length
+# movingwindow - fixed length
 
-# TODO: Docs
+# TODO: Check docs
 """
     movingwindow_fixed_length(npoints, window_length, window_step; landmark, allow_landmark_position, force_coverage)
 
@@ -182,18 +182,19 @@ have a point in common, the one indicated by `landmark`. For example, if the
 `npoints` of length 100 and `landmark` equal to 50 are given, all the generated
 windows will have the 50th point of `npoints` in them. Additionally, is possible
 to specify the position of the landmark in the generated window using
-`allow_landmark_position`.
+`allow_landmark_position`
 
-By setting `force_coverage` to true...
+By setting `force_coverage` to true the final window (if it ends after npoints)
+will be clamped at npoints.
 
 # Arguments
 
 * `npoints` is the Vector of Integer on which the windows will be generated;
-* `window_length` indicates the length of the single window;
-* `window_step` indicates the distance (step) between the starting point of one window (not included) and the starting point of the next one (included).
-* `landmark`
-* `allow_landmark_position` indicates
-* `force_coverage`
+* `window_length` is a Integer that indicates the length of the single window;
+* `window_step` is a Integer that indicates the distance (step) between the starting point of one window (not included) and the starting point of the next one (included);
+* `landmark` is a Integer that indicates a point (between 1 and npoints) which must be present in all generated windows;
+* `allow_landmark_position` is a tuple of Number in [0:1] that indicates in which portion of the windows the landmark must be present;
+* `force_coverage` indicates whether to clamp (at npoints) or exclude the last window, if it ends after npoints.
 * `start`
 """
 function _movingwindow_fixed_lenght(
@@ -227,7 +228,7 @@ function _movingwindow_fixed_lenght(
 
     start = !isnothing(landmark) ? landmark-window_length+1 : start
     start = start < 1 ? 1 : start
-    # indices = map((r)->r:r+window_length-1, range(start, npoints, step = window_step))
+    # indices = map((r)->r:r+window_length-1, range(start, npoints, step = window_step)) # TODO: Delete
     indices = map((r)->round(Int,r):round(Int, r+window_length-1), range(start, npoints, step = window_step))
 
     @show indices
