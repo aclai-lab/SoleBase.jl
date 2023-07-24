@@ -231,7 +231,6 @@ function _movingwindow_fixed_lenght(
     # indices = map((r)->r:r+window_length-1, range(start, npoints, step = window_step)) # TODO: Delete
     indices = map((r)->round(Int,r):round(Int, r+window_length-1), range(start, npoints, step = window_step))
 
-    @show indices
     if !force_coverage
         filter!((w)->w.start in 1:npoints && w.stop in 1:npoints, indices)
     else
