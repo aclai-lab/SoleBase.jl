@@ -69,22 +69,23 @@ Compute windows of length `window_length`, with consecutive windows being shifte
 `window_step` units.
 """
 
-# TODO: Expalin relative_overlap
+# TODO: Docs
 """
     movingwindow(npoints, nwindows, relative_overlap, window_length, window_step; kwargs...)
 
-Generates a certain number of windows from a serie of points (`npoints`), and 
-returns them as a Vector of indices.
+Generates a certain number of windows from a serie of points (`npoints`), and
+returns them as a Vector of indices (that can be used for slicing a vector of
+`npoints` values).
 
-NOTE: The call to the moving window must expect three, and only three, 
+NOTE: The call to the moving window must expect three, and only three,
 positional parameters, i.e. `npoints` and a combination of the rest.
 
-## PARAMETERS
-- `npoints` is the Vector of Integer on which the windows will be generated;
-- `nwindows` indicates the number of will to generate;
-- `relative_overlap`
-- `window_length` indicates the length of the single window;
-- `window_step` indicates the distance (step) between the starting point of one window (not included) and the starting point of the next one (included).
+# Arguments
+* `npoints` is the Vector of Integer on which the windows will be generated;
+* `nwindows` indicates the number of will to generate;
+* `relative_overlap`
+* `window_length` indicates the length of the single window;
+* `window_step` indicates the distance (step) between the starting point of one window (not included) and the starting point of the next one (included).
 """
 function movingwindow(
     npoints::Integer;
@@ -96,7 +97,7 @@ function movingwindow(
 )::AbstractVector{UnitRange{Int}}
 
     if !isnothing(window_length) && !isnothing(window_step)
-        _movingwindow(
+        _movingwindow_fixed_lenght(
             npoints,
             window_length,
             window_step;
@@ -135,27 +136,74 @@ function movingwindow(
     end
 end
 
+"""
+    movingwindow(v, args...; kwargs...)
+
+Slices a Vector into a certain number of windows, which are returned.
+
+# Arguments
+
+* `v` is a Vector to split into windows.
+"""
 function movingwindow(v::AbstractVector, args...; kwargs...)
     npoints = length(v)
     return map(r -> v[r], movingwindow(npoints, args...; kwargs...))
 end
 
+"""
+    movingwindow(f, v, args...; kwargs...)
+
+Slices a Vector into a certain number of windows, which are returned after
+applying an `f` function to them.
+
+# Arguments
+
+* `v` is the Vector to split into windows;
+* `f` is the function to apply to the windows.
+"""
 function movingwindow(f::Base.Callable, v::AbstractVector, args...; kwargs...)
     return map(f, movingwindow(v, args...; kwargs...))
 end
 
 
-# ------------------------------------------------------------------------------------------
-# moving window - fixed window size
+# ------------------------------------------------------------------------------
+# movingwindow - fixed window length
 
-function _movingwindow(
+# TODO: Docs
+"""
+    movingwindow_fixed_length(npoints, window_length, window_step; landmark, allow_landmark_position, force_coverage)
+
+Return a certain number of windows where each window as length `window_length`
+and the step between the starting point of one window (not included) and the
+starting point of the next one (included) is `window_step`.
+
+When a `landmark` is passed to the function, each of the generated windows will
+have a point in common, the one indicated by `landmark`. For example, if the
+`npoints` of length 100 and `landmark` equal to 50 are given, all the generated
+windows will have the 50th point of `npoints` in them. Additionally, is possible
+to specify the position of the landmark in the generated window using
+`allow_landmark_position`.
+
+By setting `force_coverage` to true...
+
+# Arguments
+
+* `npoints` is the Vector of Integer on which the windows will be generated;
+* `window_length` indicates the length of the single window;
+* `window_step` indicates the distance (step) between the starting point of one window (not included) and the starting point of the next one (included).
+* `landmark`
+* `allow_landmark_position` indicates
+* `force_coverage`
+* `start`
+"""
+function _movingwindow_fixed_lenght(
     npoints::Integer,
     window_length::Union{Integer,AbstractFloat},
     window_step::Union{Integer,AbstractFloat};
     landmark::Union{Integer,Nothing} = nothing,
-    allow_landmark_position::Tuple{<:AbstractFloat,<:AbstractFloat} = (0.0, 1.0),
+    allow_landmark_position::Tuple{<:Number,<:Number} = (0.0, 1.0), # Use Number?
     force_coverage::Bool = false,
-    start::Integer = 1, # TODO don't mention in the docstrings.
+    start::Integer = 1, # TODO don't mention in the docstrings?
 )::AbstractVector{UnitRange{Int}}
 
     window_length = max(round(Int, window_length), 1)
@@ -170,10 +218,10 @@ function _movingwindow(
             $(last(allow_landmark_position))")
         ))
     end
-    if !(first(allow_landmark_position) in 0.000:0.001:1.000) || !(last(allow_landmark_position) in 0.000:0.001:1.000)
+    if !(0 <= first(allow_landmark_position) <= 1) || !(0 <= last(allow_landmark_position) <= 1)
         throw(ArgumentError(
-            string("element of allow_landmark_position must be in range 0.000:0.001:1.000. Got
-            $(first(allow_landmark_position)) > * $(last(allow_landmark_position))")
+            string("element of allow_landmark_position must be in range 0:1. Got range
+            [$(first(allow_landmark_position)):$(last(allow_landmark_position))]")
         ))
     end
 
@@ -182,11 +230,11 @@ function _movingwindow(
     # indices = map((r)->r:r+window_length-1, range(start, npoints, step = window_step))
     indices = map((r)->round(Int,r):round(Int, r+window_length-1), range(start, npoints, step = window_step))
 
-    # @show indices
+    @show indices
     if !force_coverage
         filter!((w)->w.start in 1:npoints && w.stop in 1:npoints, indices)
     else
-        map!((w)->clamp(w.start, 1, npoints):clamp(w.stop, 1, npoints), indices)
+        map!((w)->clamp(w.start, 1, npoints):clamp(w.stop, 1, npoints), indices, indices)
     end
 
     if !isnothing(landmark)
@@ -201,7 +249,7 @@ function _movingwindow(
 end
 
 
-# ------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # moving window - fixed number of windows
 function _movingwindow_fixed_num(
     npoints::Integer,
