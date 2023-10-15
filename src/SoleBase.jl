@@ -22,7 +22,7 @@ abstract type AbstractDataset end
 
 
 _doc_slicedataset = """
-    function slicedataset(
+    slicedataset(
         dataset::D,
         dataset_slice::AbstractVector{<:Integer};
         allow_no_instances = false,
