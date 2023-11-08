@@ -7,7 +7,7 @@
 [![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://aclai-lab.github.io/SoleBase.jl/dev)
 [![Build Status](https://api.cirrus-ci.com/github/aclai-lab/SoleBase.jl.svg?branch=main)](https://cirrus-ci.com/github/aclai-lab/SoleBase.jl)
 [![Coverage](https://codecov.io/gh/aclai-lab/SoleBase.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/aclai-lab/SoleBase.jl)
-[![Code Style: Blue](https://img.shields.io/badge/code%20style-blue-4495d1.svg)](https://github.com/invenia/BlueStyle)
+<!-- [![Code Style: Blue](https://img.shields.io/badge/code%20style-blue-4495d1.svg)](https://github.com/invenia/BlueStyle) -->
 
 This package lays the foundations for [*Sole.jl*](https://github.com/aclai-lab/Sole.jl), an open-source framework for *symbolic machine learning*.
 
