@@ -4,7 +4,7 @@ CurrentModule = SoleBase
 
 # SoleBase
 
-Documentation for [SoleBase](https://github.com/aclai-lab/SoleBase.jl).
+Welcome to the documentation for [SoleBase](https://github.com/aclai-lab/SoleBase.jl).
 
 ```@index
 ```

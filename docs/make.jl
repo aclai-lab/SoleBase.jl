@@ -6,9 +6,10 @@ DocMeta.setdocmeta!(SoleBase, :DocTestSetup, :(using SoleBase); recursive=true)
 makedocs(;
     modules=[SoleBase],
     authors="Federico Manzella, Giovanni Pagliarini, Eduard I. Stan",
-    repo="https://github.com/aclai-lab/SoleBase.jl/blob/{commit}{path}#{line}",
+    repo=Documenter.Remotes.GitHub("aclai-lab", "SoleBase.jl"),
     sitename="SoleBase.jl",
     format=Documenter.HTML(;
+        size_threshold = 4000000,
         prettyurls=get(ENV, "CI", "false") == "true",
         canonical="https://aclai-lab.github.io/SoleBase.jl",
         assets=String[],
@@ -20,8 +21,7 @@ makedocs(;
 
 deploydocs(;
     repo = "github.com/aclai-lab/SoleBase.jl",
-    devbranch = "main",
     target = "build",
     branch = "gh-pages",
-    versions = ["stable" => "v^", "v#.#"],
+    versions = ["main" => "main", "stable" => "v^", "v#.#", "dev" => "dev"],
 )
