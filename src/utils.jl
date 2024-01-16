@@ -85,9 +85,9 @@ end
         30 => Symbol[:Apr, :Jun, :Sep, :Nov]
 
 """
-function _groupby(v::AbstractVector, l::AbstractVector)
+function _groupby(v::AbstractVector, l::AbstractVector, dict_type::Type = Dict)
   @assert length(v) == length(l) "$(@show v, l)"
-  res = Dict{eltype(v),Vector{eltype(l)}}()
+  res = dict_type{eltype(v),Vector{eltype(l)}}()
   for (k, val) in zip(v, l)
     push!(get!(res, k, similar(l, 0)), val)
   end
@@ -105,8 +105,8 @@ end
 Note:in this version l is required to be non-empty since I do not know how to
 access the return type of a function
 """
-function _groupby(f,l::AbstractVector)
-  res = Dict(f(l[1]) => [l[1]]) # l should be nonempty
+function _groupby(f::Base.Callable,l::AbstractVector, dict_type::Type = Dict)
+  res = dict_type(f(l[1]) => [l[1]]) # l should be nonempty
   for val in l[2:end]
     push!(get!(res, f(val), similar(l, 0)), val)
   end
