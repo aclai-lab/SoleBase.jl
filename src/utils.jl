@@ -14,6 +14,10 @@ Log detailed debug info
 """
 const LogDetail = LogLevel(-1500)
 
+function initrng(rng::Union{Integer,Random.AbstractRNG})
+    return (rng isa Random.AbstractRNG) ? rng : Random.MersenneTwister(rng)
+end
+
 """
 Return the human-readable size in Bytes/KBs/MBs/GBs/TBs of a Julia object.
 """
