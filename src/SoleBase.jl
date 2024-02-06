@@ -108,6 +108,7 @@ function channelsize end
 # includes
 
 include("utils.jl")
+include("machine-learning-utils.jl")
 
 include("movingwindow.jl")
 
