@@ -1,4 +1,5 @@
 
+using StatsBase
 using FillArrays
 using CategoricalArrays
 
