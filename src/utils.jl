@@ -153,8 +153,93 @@ end
 # I/O utils
 ############################################################################################
 
+# https://en.m.wikipedia.org/wiki/Unicode_subscripts_and_superscripts
+__superscripts = Dict([
+'̅' => string('̅'),
+'0' => "⁰",
+'1' => "¹",
+'2' => "²",
+'3' => "³",
+'4' => "⁴",
+'5' => "⁵",
+'6' => "⁶",
+'7' => "⁷",
+'8' => "⁸",
+'9' => "⁹",
+#
+' ' => " ",
+'a' => "ᵃ",
+'b' => "ᵇ",
+'c' => "ᶜ",
+'d' => "ᵈ",
+'e' => "ᵉ",
+'f' => "ᶠ",
+'g' => "ᵍ",
+'h' => "ʰ",
+'i' => "ⁱ",
+'j' => "ʲ",
+'k' => "ᵏ",
+'l' => "ˡ",
+'m' => "ᵐ",
+'n' => "ⁿ",
+'o' => "ᵒ",
+'p' => "ᵖ",
+# "q" => "𐞥",
+'r' => "ʳ",
+'s' => "ˢ",
+'t' => "ᵗ",
+'u' => "ᵘ",
+'v' => "ᵛ",
+'w' => "ʷ",
+'x' => "ˣ",
+'y' => "ʸ",
+'z' => "ᶻ",
+'A' => "ᴬ",
+'B' => "ᴮ",
+# "C" => "ꟲ",
+'D' => "ᴰ",
+'E' => "ᴱ",
+# "F" => "ꟳ",
+'G' => "ᴳ",
+'H' => "ᴴ",
+'I' => "ᴵ",
+'J' => "ᴶ",
+'K' => "ᴷ",
+'L' => "ᴸ",
+'M' => "ᴹ",
+'N' => "ᴺ",
+'O' => "ᴼ",
+'P' => "ᴾ",
+# "Q" => "ꟴ",
+'R' => "ᴿ",
+# "S" => "-",
+'T' => "ᵀ",
+'U' => "ᵁ",
+'V' => "ⱽ",
+'W' => "ᵂ",
+# "X" => "-",
+# "Y" => "-",
+# "Z" => "-",
+])
+
 # Source: https://stackoverflow.com/questions/46671965/printing-variable-subscripts-in-julia/46674866
 # '₀'
+function superscript(s::AbstractString)
+    char_to_superscript(ch) = begin
+        if ch in keys(__superscripts)
+            __superscripts[ch]
+        elseif isnothing(tryparse(Int, ch))
+            "^$(ch)"
+        else
+            "superscript"(parse(Int, ch))
+        end
+    end
+    try
+        join(map(char_to_superscript, [(ch) for ch in s]))
+    catch
+        s
+    end
+end
 function subscriptnumber(i::Integer)
     join([
         (if i < 0
