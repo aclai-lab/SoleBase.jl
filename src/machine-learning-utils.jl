@@ -76,9 +76,10 @@ function bestguess(
     if length(labels) == 0
         return nothing
     end
-
+    
     counts = begin
         if isnothing(weights)
+            # return StatsBase.mode(labels) ..?
             countmap(labels)
         else
             @assert length(labels) === length(weights) "Cannot compute " *
