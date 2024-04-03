@@ -132,7 +132,7 @@ Return a class-rebalancing weight vector, given a label vector `Y`.
 """
 function balanced_weights(Y::AbstractVector{L}) where {L<:CLabel}
     class_counts_dict = countmap(Y)
-    if length(unique(values(class_counts)_dict)) == 1 # balanced case
+    if length(unique(values(class_counts_dict))) == 1 # balanced case
         default_weights(length(Y))
     else
         # Assign weights in such a way that the dataset becomes balanced
