@@ -100,6 +100,20 @@ function ninstances(X::AbstractDataset)
 end
 
 # -------------------------------------------------------------
+# AbstractDataset - eachinstance
+
+"""
+    eachinstance(X::AbstractDataset)
+
+Return an iterator to the instances (also referred to as observations, or samples) in a dataset.
+
+See also [`AbstractDataset`](@ref).
+"""
+function eachinstance(X::AbstractDataset)
+    return error("Please, provide method eachinstance(::$(typeof(X))).")
+end
+
+# -------------------------------------------------------------
 
 function dimensionality end
 function channelsize end
