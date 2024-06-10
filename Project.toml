@@ -1,7 +1,7 @@
 name = "SoleBase"
 uuid = "4475fa32-7023-44a0-aa70-4813b230e492"
 authors = ["Federico Manzella", "Patrik Cavina", "Eduard I. Stan", "Lorenzo Balboni", "Giovanni Pagliarini"]
-version = "0.12.1"
+version = "0.12.2"
 
 [deps]
 CategoricalArrays = "324d7699-5711-5eae-9e2f-1d82baa6b597"
