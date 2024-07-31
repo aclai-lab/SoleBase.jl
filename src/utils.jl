@@ -153,7 +153,7 @@ end
 # I/O utils
 ############################################################################################
 
-# https://en.m.wikipedia.org/wiki/Unicode_subscripts_and_superscripts
+# https://en.wikipedia.org/wiki/Unicode_subscripts_and_superscripts
 __superscripts = Dict([
 '̅' => string('̅'),
 '0' => "⁰",
