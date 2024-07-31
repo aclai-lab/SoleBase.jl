@@ -4,7 +4,7 @@ using FillArrays
 using CategoricalArrays
 
 doc_supervised_ml = """
-    const CLabel  = Union{String,Integer,CategoricalValue}
+    const CLabel  = Union{AbstractString,Integer,CategoricalValue}
     const RLabel  = AbstractFloat
     const Label   = Union{CLabel,RLabel}
 
@@ -12,7 +12,7 @@ Types for supervised machine learning labels (classification and regression).
 """
 
 """$(doc_supervised_ml)"""
-const CLabel  = Union{String,Integer,CategoricalValue}
+const CLabel  = Union{AbstractString,Integer,CategoricalValue}
 """$(doc_supervised_ml)"""
 const RLabel  = AbstractFloat
 """$(doc_supervised_ml)"""
