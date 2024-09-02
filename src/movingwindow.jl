@@ -129,6 +129,9 @@ function movingwindow(f::Base.Callable, v::AbstractVector, args...; kwargs...)
     return map(f, movingwindow(v, args...; kwargs...))
 end
 
+function movingwindowmean(v::AbstractVector, args...; kwargs...)
+    return map(StatsBase.mean, movingwindow(v, args...; kwargs...))
+end
 
 # ------------------------------------------------------------------------------------------
 # moving window - fixed window size

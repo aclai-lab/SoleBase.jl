@@ -6,7 +6,7 @@ export AbstractDataset
 export humansize
 export ninstances
 
-export moving_window, movingwindow
+export moving_window, movingwindow, movingwindowmean
 
 # -------------------------------------------------------------
 # AbstractDataset
