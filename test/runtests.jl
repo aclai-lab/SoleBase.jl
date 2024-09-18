@@ -14,7 +14,7 @@ end
 println("Julia version: ", VERSION)
 
 test_suites = [
-    ("Moving window", ["movingwindow.jl", ]),
+    ("Moving window", ["movingwindow.jl"]),
 ]
 
 @testset "SoleBase.jl" begin

@@ -1,7 +1,6 @@
 
 module SoleBase
 
-
 export AbstractDataset
 export humansize
 export ninstances
@@ -19,7 +18,6 @@ Abstract supertype for all datasets.
 See also [`ninstances`](@ref).
 """
 abstract type AbstractDataset end
-
 
 _doc_slicedataset = """
     slicedataset(
@@ -46,11 +44,11 @@ provide the following method:
 
 """$(_doc_slicedataset)"""
 function slicedataset(
-    dataset::D,
-    dataset_slice::Union{Colon,Integer,AbstractVector,Tuple};
-    allow_no_instances = false,
-    return_view = false,
-    kwargs...,
+        dataset::D,
+        dataset_slice::Union{Colon, Integer, AbstractVector, Tuple};
+        allow_no_instances = false,
+        return_view = false,
+        kwargs...,
 ) where {D}
     if dataset_slice isa Colon
         return deepcopy(dataset)
@@ -60,8 +58,8 @@ function slicedataset(
             return error("Cannot slice dataset with slice of type $(eltype(dataset_slice))")
         end
         if !(allow_no_instances ||
-            (!(dataset_slice isa Union{AbstractVector{<:Integer},Tuple{<:Integer}}) ||
-                length(dataset_slice) > 0))
+             (!(dataset_slice isa Union{AbstractVector{<:Integer}, Tuple{<:Integer}}) ||
+              length(dataset_slice) > 0))
             return error("Cannot apply empty slice to dataset.")
         end
         return instances(dataset, dataset_slice, Val(return_view); kwargs...)
@@ -70,20 +68,19 @@ end
 
 function concatdatasets(datasets::D...) where {D}
     return error("`concatdatasets` method not implemented for type "
-        * string(typejoin(typeof.(datasets)...))) * "."
+                 * string(typejoin(typeof.(datasets)...))) * "."
 end
 
 """$(_doc_slicedataset)"""
 function instances(
-    dataset::D,
-    inds::AbstractVector,
-    return_view::Union{Val{true},Val{false}};
-    kwargs...
+        dataset::D,
+        inds::AbstractVector,
+        return_view::Union{Val{true}, Val{false}};
+        kwargs...,
 ) where {D}
     return error("`instances` method not implemented for type "
-        * string(typeof(dataset))) * "."
+                 * string(typeof(dataset))) * "."
 end
-
 
 # -------------------------------------------------------------
 # AbstractDataset - ninstances
@@ -127,6 +124,5 @@ include("machine-learning-utils.jl")
 include("movingwindow.jl")
 
 @deprecate moving_window(args...; kwargs...) movingwindow(args...; kwargs...)
-
 
 end

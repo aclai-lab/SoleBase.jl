@@ -45,13 +45,12 @@ for npoints in 1:N
                 @test length(unique([length(ids) for ids in indices])) == 1
                 @test all([length(i) == window_size for i in indices]) == true
                 # window_step
-                @test all([first(indices[i+1]) - first(indices[i]) == window_step for i in 1:length(indices)-1]) == true
+                @test all([first(indices[i + 1]) - first(indices[i]) == window_step for i in 1:(length(indices) - 1)]) == true
                 # others
                 @test first(first(indices)) == 1
             end
             #overflow
             @test all([first(i) in 1:npoints for i in indices]) == true
-
 
             @test all(length.(indices) .== length(first(indices))) == true
 
@@ -66,7 +65,6 @@ for npoints in 1:N
         end
     end
 end
-
 
 # seed = 1
 
