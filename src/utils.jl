@@ -121,6 +121,7 @@ end
 
 ############################################################################################
 
+# TODO maybe this is not needed anymore. Remove?
 _typejoin(S::_S) where {_S} = S
 _typejoin(S::_S, T::_T) where {_S, _T} = typejoin(S, T)
 _typejoin(S::_S, T::_T, args...) where {_S, _T} = typejoin(S, typejoin(T, args...))
