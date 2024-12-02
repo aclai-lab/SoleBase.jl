@@ -280,7 +280,7 @@ function _moving_window_fixed_num_size(
             window_step = window_size - (abs(steps) / (nwindows - 1))
         end
 
-        @show steps, window_step, start, finish
+        # @show steps, window_step, start, finish
         #@show range(start, npoints, step = window_step)
         #indices = moving_window(finish; window_size = window_size, window_step = window_step, start = start)
         #@show indices
