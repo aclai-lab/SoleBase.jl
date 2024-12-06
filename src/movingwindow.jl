@@ -129,6 +129,20 @@ function movingwindow(f::Base.Callable, v::AbstractVector, args...; kwargs...)
     return map(f, movingwindow(v, args...; kwargs...))
 end
 
+# ------------------------------------------------------------------------------------------
+# moving window methods with defaulted arguments
+
+wholewindow(npoints::Int; kwargs...) = movingwindow(npoints; nwindows=1, window_size=npoints)
+splitwindow(npoints::Int; nwindows::Int, kwargs...) = movingwindow(npoints; nwindows=nwindows, relative_overlap=0.0)
+
+function adaptivewindow(
+    npoints::Int;
+    nwindows::Int,
+    relative_overlap::AbstractFloat = 0.1,
+    kwargs...
+)
+    movingwindow(npoints; nwindows=nwindows, relative_overlap=relative_overlap, kwargs...)
+end
 
 # ------------------------------------------------------------------------------------------
 # moving window - fixed window size
