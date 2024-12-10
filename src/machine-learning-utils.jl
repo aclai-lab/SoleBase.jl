@@ -62,9 +62,9 @@ See also
 [`Label`](@ref).
 """
 function bestguess(
-        labels::AbstractVector{<:Label},
-        weights::Union{Nothing, AbstractVector} = nothing;
-        suppress_parity_warning = false,
+    labels::AbstractVector{<:Label},
+    weights::Union{Nothing, AbstractVector} = nothing;
+    suppress_parity_warning = false,
 ) end
 
 # Classification: (weighted) majority vote
