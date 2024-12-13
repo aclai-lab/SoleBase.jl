@@ -69,9 +69,9 @@ function bestguess(
 
 # Classification: (weighted) majority vote
 function bestguess(
-        labels::AbstractVector{<:CLabel},
-        weights::Union{Nothing, AbstractVector} = nothing;
-        suppress_parity_warning = false,
+    labels::AbstractVector{<:CLabel},
+    weights::Union{Nothing, AbstractVector} = nothing;
+    suppress_parity_warning = false,
 )
     if length(labels) == 0
         return nothing
@@ -100,9 +100,9 @@ end
 
 # Regression: (weighted) mean (or other central tendency measure?)
 function bestguess(
-        labels::AbstractVector{<:RLabel},
-        weights::Union{Nothing, AbstractVector} = nothing;
-        suppress_parity_warning = false,
+    labels::AbstractVector{<:RLabel},
+    weights::Union{Nothing, AbstractVector} = nothing;
+    suppress_parity_warning = false,
 )
     if length(labels) == 0
         return nothing
@@ -110,6 +110,7 @@ function bestguess(
 
     (isnothing(weights) ? StatsBase.mean(labels) : sum(labels .* weights) / sum(weights))
 end
+
 
 ############################################################################################
 
