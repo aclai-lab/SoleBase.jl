@@ -12,7 +12,7 @@ Types for supervised machine learning labels (classification and regression).
 """
 
 """$(doc_supervised_ml)"""
-const CLabel  = Union{AbstractString,Integer,CategoricalValue}
+const CLabel = Union{AbstractString, CategoricalValue, Integer} # TODO it is improper to consider Integer's as categorical labels. Should actually be RLabel's, and CategoricalValue's should be used, instead. However, atm some algorithms still rely on Int's labels to be intended as indices of a vector of class names...
 """$(doc_supervised_ml)"""
 const RLabel = AbstractFloat # TODO: Real
 """$(doc_supervised_ml)"""
