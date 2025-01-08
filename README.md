@@ -13,6 +13,7 @@
 
 This package lays the foundations for [_Sole.jl_](https://github.com/aclai-lab/Sole.jl), an open-source framework for _symbolic machine learning_.
 
+
 ## About
 
 The package is developed by the [ACLAI Lab](https://aclai.unife.it/en/) @ University of Ferrara.
