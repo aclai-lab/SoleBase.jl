@@ -7,6 +7,7 @@ export ninstances
 
 export moving_window, movingwindow, wholewindow, splitwindow, adaptivewindow
 
+export slicedataset, displaystructure
 # -------------------------------------------------------------
 # AbstractDataset
 
@@ -28,7 +29,7 @@ See also [`ninstances`](@ref).
 """
 abstract type AbstractDataset end
 
-_doc_slicedataset = """
+"""
     slicedataset(
         dataset::D,
         dataset_slice::AbstractVector{<:Integer};
@@ -43,21 +44,22 @@ Return a machine learning dataset with a subset of the instances.
 
 In order to use slicedataset on a custom dataset representation,
 provide the following method:
+
     instances(
         dataset::D,
         dataset_slice::AbstractVector{<:Integer},
         return_view::Union{Val{true},Val{false}};
         kwargs...
     ) where {D<:AbstractDataset}
-"""
 
-"""$(_doc_slicedataset)"""
+See [`concatdatasets`](@ref).
+"""
 function slicedataset(
-        dataset::D,
-        dataset_slice::Union{Colon, Integer, AbstractVector, Tuple};
-        allow_no_instances = false,
-        return_view = false,
-        kwargs...,
+    dataset::D,
+    dataset_slice::Union{Colon, Integer, AbstractVector, Tuple};
+    allow_no_instances = false,
+    return_view = false,
+    kwargs...,
 ) where {D}
     if dataset_slice isa Colon
         return deepcopy(dataset)
@@ -75,21 +77,37 @@ function slicedataset(
     end
 end
 
+"""
+    concatdatasets(datasets...)
+
+Return the concatenation of machine learning datasets.
+
+See [`slicedataset`](@ref).
+"""
 function concatdatasets(datasets::D...) where {D}
     return error("`concatdatasets` method not implemented for type "
                  * string(typejoin(typeof.(datasets)...))) * "."
 end
 
-"""$(_doc_slicedataset)"""
+"""See [`slicedataset`](@ref)."""
 function instances(
-        dataset::D,
-        inds::AbstractVector,
-        return_view::Union{Val{true}, Val{false}};
-        kwargs...,
+    dataset::D,
+    inds::AbstractVector,
+    return_view::Union{Val{true}, Val{false}};
+    kwargs...,
 ) where {D}
     return error("`instances` method not implemented for type "
                  * string(typeof(dataset))) * "."
 end
+
+"""
+Return a string representing a dataset's structure.
+"""
+function displaystructure end
+# function displaystructure(dataset; kwargs...)
+#     return error("`displaystructure` method not implemented for type "
+#                  * string(typeof(dataset))) * "."
+# end
 
 # -------------------------------------------------------------
 # AbstractDataset - ninstances
@@ -121,7 +139,18 @@ end
 
 # -------------------------------------------------------------
 
+"""
+Return the dimensionality of a dimensional dataset.
+
+See also [`AbstractDataset`](@ref).
+"""
 function dimensionality end
+
+"""
+Return the channel size for a uniform dimensional dataset.
+
+See also [`AbstractDataset`](@ref).
+"""
 function channelsize end
 
 # -------------------------------------------------------------
