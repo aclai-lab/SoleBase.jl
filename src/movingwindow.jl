@@ -395,7 +395,6 @@ end
 # end
 
 #step_size = (npoints-(nwind*window_size)) / (nwind-1)
-# questo è lo step a partire dalla fine della finestra precedente (quindi può anche essere negativo se c'è un overlap tra le finestre)
 
 # When `allow_overflow=true`, a simpler algorithm for computing the ... the function is allowed to return windows with
 # values outside of `1:npoints`. For example, if `npoints=100`, `window_size=10`,
