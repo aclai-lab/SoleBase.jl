@@ -5,6 +5,7 @@ using CategoricalArrays
 
 doc_supervised_ml = """
     const XGLabel = Tuple{Union{AbstractString, Integer, CategoricalValue}, Real}
+    const XGLabel = Tuple{Union{AbstractString, Integer, CategoricalValue}, Real}
     const CLabel  = Union{AbstractString,Integer,CategoricalValue}
     const RLabel  = AbstractFloat
     const Label   = Union{CLabel,RLabel}
@@ -12,6 +13,10 @@ doc_supervised_ml = """
 Types for supervised machine learning labels (classification and regression).
 """
 
+"""$(doc_supervised_ml)"""
+const XGLabel = Tuple{Union{AbstractString, Integer, CategoricalValue}, Real}
+"""$(doc_supervised_ml)"""
+const XGLabel = Tuple{Union{AbstractString, Integer, CategoricalValue}, Real}
 """$(doc_supervised_ml)"""
 const XGLabel = Tuple{Union{AbstractString, Integer, CategoricalValue}, Real}
 """$(doc_supervised_ml)"""
@@ -114,6 +119,27 @@ function bestguess(
     (isnothing(weights) ? StatsBase.mean(labels) : sum(labels .* weights) / sum(weights))
 end
 
+function bestguess(
+    labels::AbstractVector{<:XGLabel},
+    classlabels::Union{AbstractVector{Symbol}, AbstractVector{String}};
+    return_sum::Bool=false
+)
+    length(labels) == 0 && return nothing
+    nclass = length(classlabels)
+
+    class_sums = [0.0 for i in 1:nclass]
+
+    for (i, (_, value)) in enumerate(labels)
+        class_idx = ((i - 1) % nclass) + 1
+        class_sums[class_idx] += value
+    end
+
+    class_sums = exp.(class_sums)
+
+    best_class = classlabels[argmax(class_sums)]
+    # return either just the class or both class and sum
+    return return_sum ? (best_class, class_sums[best_class]) : best_class
+end
 function bestguess(
     labels::AbstractVector{<:XGLabel},
     classlabels::Union{AbstractVector{Symbol}, AbstractVector{String}};
