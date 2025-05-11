@@ -88,14 +88,14 @@ function movingwindow(
             kwargs...
         )
     elseif !isnothing(nwindows) && !isnothing(relative_overlap)
-        _moving_window_fixed_num(
+        _movingwindow_fixed_num(
             npoints,
             nwindows,
             relative_overlap;
             kwargs...
         )
     elseif !isnothing(nwindows) && !isnothing(window_size)
-        _moving_window_fixed_num_size(
+        _movingwindow_fixed_num_size(
             npoints,
             nwindows,
             window_size;
@@ -202,7 +202,7 @@ end
 
 # ------------------------------------------------------------------------------------------
 # moving window - fixed number of windows
-function _moving_window_fixed_num(
+function _movingwindow_fixed_num(
     npoints::Integer,
     nwindows::Integer,
     relative_overlap::AbstractFloat;
@@ -260,7 +260,7 @@ end
 # ------------------------------------------------------------------------------------------
 # moving window - fixed number of fixed-size windows
 
-function _moving_window_fixed_num_size(
+function _movingwindow_fixed_num_size(
     npoints::Integer,
     nwindows::Integer,
     window_size::Integer;
@@ -296,7 +296,7 @@ function _moving_window_fixed_num_size(
 
         # @show steps, window_step, start, finish
         #@show range(start, npoints, step = window_step)
-        #indices = moving_window(finish; window_size = window_size, window_step = window_step, start = start)
+        #indices = movingwindow(finish; window_size = window_size, window_step = window_step, start = start)
         #@show indices
         #indices[1:nwindows]
         indices = map((r)->round(Int,r):(round(Int, r)+window_size-1), range(start, finish, step = window_step))

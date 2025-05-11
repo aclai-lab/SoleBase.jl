@@ -2,7 +2,7 @@
 # for npoints in 1:100
 #     for nwindows in 1:npoints
 #         for relative_overlap in 0.0:0.1:1
-#             indices = moving_window(npoints; nwindows = nwindows, relative_overlap = relative_overlap)
+#             indices = movingwindow(npoints; nwindows = nwindows, relative_overlap = relative_overlap)
 
 #             # nwindows
 #             @test length(indices) == nwindows
@@ -16,7 +16,7 @@
 
 #             for landmark in 1:npoints
 #                 #@show indices, npoints, relative_overlap, nwindows, landmark
-#                 indices = moving_window(npoints; nwindows = nwindows, relative_overlap = relative_overlap, landmark = landmark)
+#                 indices = movingwindow(npoints; nwindows = nwindows, relative_overlap = relative_overlap, landmark = landmark)
 #                 # nwindows
 #                 @test length(indices) == nwindows
 #                 # relative_overlap
@@ -38,8 +38,8 @@ for npoints in 1:N
     for window_size in 1:npoints
         for window_step in 1:npoints
             # Moving Window - window_size, window_step
-            indices = moving_window(npoints; window_size = window_size, window_step = window_step)
-            indices_overflow = moving_window(npoints; window_size = window_size, window_step = window_step)
+            indices = movingwindow(npoints; window_size = window_size, window_step = window_step)
+            indices_overflow = movingwindow(npoints; window_size = window_size, window_step = window_step)
             for ids in [indices, indices_overflow]
                 # window_size
                 @test length(unique([length(ids) for ids in indices])) == 1
@@ -55,7 +55,7 @@ for npoints in 1:N
             @test all(length.(indices) .== length(first(indices))) == true
 
             # for landmark in 1:npoints
-            #     indices = moving_window(npoints; window_size = window_size, nwindows = nwindows, landmark = landmark)
+            #     indices = movingwindow(npoints; window_size = window_size, nwindows = nwindows, landmark = landmark)
             #     # window_size
             #     @test all(length.(indices) .== length(first(indices))) == true
             #     # nwindows
@@ -73,8 +73,8 @@ end
 #     for window_size in 1:npoints
 #         for window_step in 1:npoints
 #             # Moving Window - window_size, window_step
-#             indices = moving_window(npoints; window_size = window_size, window_step = window_step)
-#             indices_overflow = moving_window(npoints; window_size = window_size, window_step = window_step)
+#             indices = movingwindow(npoints; window_size = window_size, window_step = window_step)
+#             indices_overflow = movingwindow(npoints; window_size = window_size, window_step = window_step)
 #             for ids in [indices, indices_overflow]
 #                 # window_size
 #                 @test length(unique([length(ids) for ids in indices])) == 1
@@ -89,8 +89,8 @@ end
 
 #             for landmark in 1:npoints
 #                 # Moving Window - window_size, window_step, landmark
-#                 indices = moving_window(npoints; window_size = window_size, window_step = window_step, landmark = landmark)
-#                 indices_overflow = moving_window(npoints; window_size = window_size, window_step = window_step, landmark = landmark)
+#                 indices = movingwindow(npoints; window_size = window_size, window_step = window_step, landmark = landmark)
+#                 indices_overflow = movingwindow(npoints; window_size = window_size, window_step = window_step, landmark = landmark)
 #                 for ids in [indices, indices_overflow]
 #                     # window_size
 #                     @test length(unique([length(ids) for ids in indices])) == 1
@@ -109,8 +109,8 @@ end
 #                 positions = filter(x->x[1] < x[2], product(a,a) |> collect |> vec)
 #                 positions = positions[[rand(rng, 1:length(positions)) for c in 1:20]]
 #                 for pos in positions
-#                     indices = moving_window(npoints; window_size = window_size, window_step = window_step, landmark = landmark, allow_landmark_position = pos)
-#                     indices_overflow = indices = moving_window(npoints; window_size = window_size, window_step = window_step, landmark = landmark, allow_landmark_position = pos)
+#                     indices = movingwindow(npoints; window_size = window_size, window_step = window_step, landmark = landmark, allow_landmark_position = pos)
+#                     indices_overflow = indices = movingwindow(npoints; window_size = window_size, window_step = window_step, landmark = landmark, allow_landmark_position = pos)
 #                     for ids in [indices, indices_overflow]
 #                         # window_size
 #                         if length(indices) > 1
@@ -134,7 +134,7 @@ end
 # for npoints in 1:100
 #     for nwindows in 1:npoints
 #         for window_size in nwindows:floor(Int, npoints/nwindows)
-#             indices = moving_window_fixed_size(npoints, nwindows, window_size)
+#             indices = movingwindow_fixed_size(npoints, nwindows, window_size)
 #             # @show npoints, nwindows, window_size, indices
 #             # window_size
 #             @test all(length.(indices) .== length(first(indices))) == true
@@ -142,7 +142,7 @@ end
 #             @test length(indices) == nwindows
 #             for landmark in 1:npoints
 #                 @show npoints, nwindows, window_size, landmark
-#                 indices = moving_window_fixed_size(npoints, nwindows, window_size; landmark)
+#                 indices = movingwindow_fixed_size(npoints, nwindows, window_size; landmark)
 #                 @show indices
 #                 # window_size
 #                 @test all(length.(indices) .== length(first(indices))) == true
