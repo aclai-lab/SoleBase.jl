@@ -134,7 +134,7 @@ function bestguess(
 
     best_class = classlabels[argmax(class_sums)]
     # return either just the class or both class and sum
-    return return_sum ? (best_class, class_sums[best_class]) : best_class
+    return return_sum ? (best_class, class_sums[argmax(class_sums)]) : best_class
 end
 
 ############################################################################################
