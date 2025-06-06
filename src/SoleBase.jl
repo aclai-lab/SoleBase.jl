@@ -161,6 +161,12 @@ include("machine-learning-utils.jl")
 
 include("movingwindow.jl")
 
+# ---------------------------------------------------------------------------- #
+#                                  modelset                                    #
+# ---------------------------------------------------------------------------- #
+include("modelset/interface.jl")
+include("modelset/modelset.jl")
+
 @deprecate moving_window(args...; kwargs...) movingwindow(args...; kwargs...)
 
 end

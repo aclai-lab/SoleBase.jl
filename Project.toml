@@ -1,7 +1,7 @@
 name = "SoleBase"
 uuid = "4475fa32-7023-44a0-aa70-4813b230e492"
 authors = ["Federico Manzella", "Patrik Cavina", "Eduard I. Stan", "Lorenzo Balboni", "Giovanni Pagliarini"]
-version = "0.13.0"
+version = "0.13.1"
 
 [deps]
 CategoricalArrays = "324d7699-5711-5eae-9e2f-1d82baa6b597"
@@ -21,6 +21,7 @@ julia = "1"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+Distributed = "8ba89e20-285c-5b6f-9357-94700520ee1b"
 
 [targets]
-test = ["Test"]
+test = ["Test", "Distributed"]

@@ -1,7 +1,16 @@
-using Test
-using SoleBase
-using IterTools
-using Random
+using Distributed
+addprocs(2)
+
+@everywhere begin
+    using SoleBase
+    using Test
+    using Random
+    using StatsBase
+    using IterTools
+    using FillArrays
+    using CategoricalArrays
+    # using StableRNGs
+end
 
 function run_tests(list)
     println("\n" * ("#"^50))
@@ -15,6 +24,7 @@ println("Julia version: ", VERSION)
 
 test_suites = [
     ("Moving window", ["movingwindow.jl"]),
+    ("Machine learning utils", ["machine_learning_utils.jl"]),
 ]
 
 @testset "SoleBase.jl" begin
