@@ -2,7 +2,7 @@ name: CI
 on:
   push:
     branches:
-      - 8-upgrade-soledata-with-github-ci-and-new-data-structs-for-solexplorer
+      - main
     tags: ['*']
   pull_request:
   workflow_dispatch:
