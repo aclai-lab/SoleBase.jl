@@ -6,7 +6,7 @@
 
 [![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://aclai-lab.github.io/SoleBase.jl/)
 [![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://aclai-lab.github.io/SoleBase.jl/dev)
-[![Build Status](https://api.cirrus-ci.com/github/aclai-lab/SoleBase.jl.svg?branch=main)](https://cirrus-ci.com/github/aclai-lab/SoleBase.jl)
+[![CI](https://github.com/aclai-lab/SoleBase.jl/actions/workflows/ci.yml/badge.svg)](https://github.com/aclai-lab/SoleBase.jl/actions/workflows/ci.yml)
 [![Coverage](https://codecov.io/gh/aclai-lab/SoleBase.jl/branch/main/graph/badge.svg?token=LT9IYIYNFI)](https://codecov.io/gh/aclai-lab/SoleBase.jl)
 
 <!-- [![Code Style: Blue](https://img.shields.io/badge/code%20style-blue-4495d1.svg)](https://github.com/invenia/BlueStyle) -->
