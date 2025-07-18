@@ -43,7 +43,7 @@
 
         # Test parity warning suppression
         parity_labels = ["a", "b"]
-        @test_nowarn SoleBase.bestguess(parity_labels, suppress_parity_warning=true)
+        @test_nowarn SoleBase.bestguess(parity_labels, suppress_parity_warning=false)
     end
     
     @testset "bestguess - Regression" begin

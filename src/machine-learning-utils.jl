@@ -51,7 +51,7 @@ end
     bestguess(
         labels::AbstractVector{<:Label},
         weights::Union{Nothing,AbstractVector} = nothing;
-        suppress_parity_warning = true,
+        suppress_parity_warning = false,
     )
 
 Return the best guess for a set of labels; that is, the label that best approximates the
@@ -68,14 +68,14 @@ See also
 function bestguess(
     labels::AbstractVector{<:Label},
     weights::Union{Nothing, AbstractVector} = nothing;
-    suppress_parity_warning = true,
+    suppress_parity_warning = false,
 ) end
 
 # Classification: (weighted) majority vote
 function bestguess(
     labels::AbstractVector{<:CLabel},
     weights::Union{Nothing, AbstractVector} = nothing;
-    suppress_parity_warning = true,
+    suppress_parity_warning = false,
 )
     if length(labels) == 0
         return nothing
@@ -112,7 +112,7 @@ end
 function bestguess(
     labels::AbstractVector{<:RLabel},
     weights::Union{Nothing, AbstractVector} = nothing;
-    suppress_parity_warning = true,
+    suppress_parity_warning = false,
 )
     if length(labels) == 0
         return nothing
