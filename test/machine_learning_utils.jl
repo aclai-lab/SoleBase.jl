@@ -2,7 +2,7 @@
     
     @testset "Type Definitions" begin
         @test SoleBase.XGLabel == Tuple{Union{AbstractString, Integer, CategoricalValue}, Real}
-        @test SoleBase.CLabel == Union{AbstractString, CategoricalValue}
+        @test SoleBase.CLabel == Union{AbstractString, Symbol, CategoricalValue}
         @test SoleBase.RLabel == Real
         @test SoleBase.Label == Union{SoleBase.CLabel, SoleBase.RLabel}
     end
@@ -41,9 +41,12 @@
         @test SoleBase.bestguess(cat_labels) isa CategoricalValue{String, UInt32}
         @test SoleBase.bestguess(cat_labels) == "x"
 
-        # Test parity warning suppression
+        # Test that parity warning is shown when not suppressed
         parity_labels = ["a", "b"]
-        @test_nowarn SoleBase.bestguess(parity_labels, suppress_parity_warning=false)
+        @test_logs (:warn, r"Parity encountered in bestguess!") SoleBase.bestguess(parity_labels, suppress_parity_warning=false)
+
+        # Test parity warning suppression
+        @test_nowarn SoleBase.bestguess(parity_labels, suppress_parity_warning=true)
     end
     
     @testset "bestguess - Regression" begin
