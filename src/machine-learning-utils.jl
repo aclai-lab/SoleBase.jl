@@ -16,7 +16,7 @@ Types for supervised machine learning labels (classification and regression).
 """$(doc_supervised_ml)"""
 const XGLabel = Tuple{Union{AbstractString, Integer, CategoricalValue}, Real}
 """$(doc_supervised_ml)"""
-const CLabel = Union{AbstractString, CategoricalValue}
+const CLabel = Union{AbstractString, Symbol, CategoricalValue}
 """$(doc_supervised_ml)"""
 const RLabel = Real
 """$(doc_supervised_ml)"""
@@ -52,6 +52,7 @@ end
         labels::AbstractVector{<:Label},
         weights::Union{Nothing,AbstractVector} = nothing;
         suppress_parity_warning = false,
+        parity_func = sort(collect(counts), by = x -> x[1])[1][1]
     )
 
 Return the best guess for a set of labels; that is, the label that best approximates the
@@ -67,15 +68,17 @@ See also
 """
 function bestguess(
     labels::AbstractVector{<:Label},
-    weights::Union{Nothing, AbstractVector} = nothing;
-    suppress_parity_warning = false,
+    weights::Union{Nothing, AbstractVector}=nothing;
+    suppress_parity_warning=false,
+    parity_func=x->argmax(x)
 ) end
 
 # Classification: (weighted) majority vote
 function bestguess(
     labels::AbstractVector{<:CLabel},
-    weights::Union{Nothing, AbstractVector} = nothing;
-    suppress_parity_warning = false,
+    weights::Union{Nothing, AbstractVector}=nothing;
+    suppress_parity_warning=false,
+    parity_func=x->argmax(x)
 )
     if length(labels) == 0
         return nothing
@@ -93,20 +96,25 @@ function bestguess(
         end
     end
 
-    if !suppress_parity_warning && sum(counts[argmax(counts)] .== values(counts)) > 1
-        @warn "Parity encountered in bestguess! " *
-              "counts ($(length(labels)) elements): $(counts), " *
-              "argmax: $(argmax(counts)), " *
-              "max: $(counts[argmax(counts)]) (sum = $(sum(values(counts))))"
+    if sum(counts[argmax(counts)] .== values(counts)) > 1
+        suppress_parity_warning || (
+            @warn "Parity encountered in bestguess! " *
+                  "counts ($(length(labels)) elements): $(counts), " *
+                  "argmax: $(argmax(counts)), " *
+                  "max: $(counts[argmax(counts)]) (sum = $(sum(values(counts))))"
+        )
+        parity_func(counts)
+    else
+        argmax(counts)
     end
-    argmax(counts)
 end
 
 # Regression: (weighted) mean (or other central tendency measure?)
 function bestguess(
     labels::AbstractVector{<:RLabel},
-    weights::Union{Nothing, AbstractVector} = nothing;
-    suppress_parity_warning = false,
+    weights::Union{Nothing, AbstractVector}=nothing;
+    suppress_parity_warning=false,
+    parity_func=x->(x)
 )
     if length(labels) == 0
         return nothing
