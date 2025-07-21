@@ -2,7 +2,7 @@ name: CI
 on:
   push:
     branches:
-      - 10-compatibility-with-decisiontree-package
+      - main
     tags: ['*']
   pull_request:
   workflow_dispatch:
