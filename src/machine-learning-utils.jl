@@ -125,7 +125,7 @@ end
 
 function bestguess(
     labels::AbstractVector{<:XGLabel},
-    classlabels::Union{AbstractVector{Symbol}, AbstractVector{String}};
+    classlabels::AbstractVector{<:CLabel};
     return_sum::Bool=false
 )
     length(labels) == 0 && return nothing
