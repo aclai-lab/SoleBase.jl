@@ -5,7 +5,6 @@ using CategoricalArrays
 
 doc_supervised_ml = """
     const XGLabel = Tuple{Union{AbstractString, Integer, CategoricalValue}, Real}
-    const XGLabel = Tuple{Union{AbstractString, Integer, CategoricalValue}, Real}
     const CLabel  = Union{AbstractString,Integer,CategoricalValue}
     const RLabel  = AbstractFloat
     const Label   = Union{CLabel,RLabel}
@@ -16,15 +15,11 @@ Types for supervised machine learning labels (classification and regression).
 """$(doc_supervised_ml)"""
 const XGLabel = Tuple{Union{AbstractString, Integer, CategoricalValue}, Real}
 """$(doc_supervised_ml)"""
-const CLabel = Union{AbstractString, Symbol, CategoricalValue}
+const CLabel = Union{AbstractString, Symbol, CategoricalValue, UInt32}
 """$(doc_supervised_ml)"""
 const RLabel = Real
 """$(doc_supervised_ml)"""
 const Label = Union{CLabel, RLabel}
-
-# Raw labels
-const _CLabel = Integer # (classification labels are internally represented as integers)
-const _Label = Union{_CLabel, RLabel}
 
 ############################################################################################
 
@@ -37,7 +32,7 @@ Base.@propagate_inbounds @inline function get_categorical_form(Y::AbstractVector
         @inbounds dict[class_names[i]] = i
     end
 
-    _Y = Array{Int64}(undef, length(Y))
+    _Y = Array{UInt32}(undef, length(Y))
     @simd for i in 1:length(Y)
         @inbounds _Y[i] = dict[Y[i]]
     end

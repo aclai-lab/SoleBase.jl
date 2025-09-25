@@ -2,7 +2,7 @@
     
     @testset "Type Definitions" begin
         @test SoleBase.XGLabel == Tuple{Union{AbstractString, Integer, CategoricalValue}, Real}
-        @test SoleBase.CLabel == Union{AbstractString, Symbol, CategoricalValue}
+        @test SoleBase.CLabel == Union{AbstractString, Symbol, CategoricalValue, UInt32}
         @test SoleBase.RLabel == Real
         @test SoleBase.Label == Union{SoleBase.CLabel, SoleBase.RLabel}
     end
